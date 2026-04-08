@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, useSendTx } from "@/hooks/useAuth";
 import { formatUsd, cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -105,6 +105,7 @@ export default function DashboardPage() {
 
 function DashboardContent({ token, onLogout }: { token: string; onLogout: () => void }) {
   const { authenticated, user, login } = useAuth();
+  const { sendTransaction } = useSendTx();
 
   const [question, setQuestion] = useState("");
   const [optionA, setOptionA] = useState("Yes");
@@ -114,10 +115,11 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
   const [imageUrl, setImageUrl] = useState("");
   const [chain, setChain] = useState("base");
   const [creating, setCreating] = useState(false);
+  const [createStatus, setCreateStatus] = useState<string | null>(null);
   const [createError, setCreateError] = useState<string | null>(null);
   const [createResult, setCreateResult] = useState<{
     contract_address: string;
-    explorer_urls: string[];
+    market_id?: string;
   } | null>(null);
 
   const [myMarkets, setMyMarkets] = useState<CreatedMarket[]>([]);
@@ -126,6 +128,7 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
   const [resolveAddr, setResolveAddr] = useState("");
   const [resolveOutcome, setResolveOutcome] = useState<"yes" | "no">("yes");
   const [resolving, setResolving] = useState(false);
+  const [resolveStatus, setResolveStatus] = useState<string | null>(null);
   const [resolveResult, setResolveResult] = useState<string | null>(null);
 
   const fetchMyMarkets = useCallback(async () => {
@@ -142,20 +145,46 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
 
   useEffect(() => { fetchMyMarkets(); }, [fetchMyMarkets]);
 
+  // Helper: sign + broadcast an array of unsigned txs via Privy wallet
+  async function signTransactions(
+    txs: { to: string; data: string; value: string; gas: string; chain_id: number; description?: string }[],
+    onStatus: (msg: string) => void
+  ): Promise<string> {
+    let lastHash = "";
+    for (let i = 0; i < txs.length; i++) {
+      const tx = txs[i];
+      onStatus(`Signing ${i + 1}/${txs.length}: ${tx.description || "transaction"}...`);
+      const result = await sendTransaction(
+        {
+          to: tx.to as `0x${string}`,
+          data: tx.data as `0x${string}`,
+          value: BigInt(tx.value || "0"),
+          chainId: tx.chain_id,
+        },
+        { address: user?.wallet?.address }
+      );
+      lastHash = typeof result === "string" ? result : "";
+    }
+    return lastHash;
+  }
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!authenticated || !user?.wallet?.address) { login(); return; }
     if (!question || !endTime || !liquidity) {
       setCreateError("All fields are required"); return;
     }
-    if (Number(liquidity) < 100) {
-      setCreateError("Minimum liquidity is $100"); return;
+    if (Number(liquidity) < 2) {
+      setCreateError("Minimum liquidity is $2"); return;
     }
 
     setCreating(true);
     setCreateError(null);
+    setCreateStatus("Preparing market deployment...");
+
     try {
-      const res = await fetch("/api/markets/create", {
+      // Step 1: Get unsigned creation transaction
+      const prepRes = await fetch("/api/markets/create", {
         method: "POST",
         headers: authHeaders(token),
         body: JSON.stringify({
@@ -168,36 +197,72 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
           wallet_address: user.wallet.address,
         }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to create market");
-      setCreateResult(data);
+      const prepData = await prepRes.json();
+      if (!prepRes.ok) throw new Error(prepData.error || "Failed to prepare");
+
+      // Step 2: Sign and broadcast creation tx
+      setCreateStatus("Sign the deploy transaction in your wallet...");
+      const creationHash = await signTransactions(prepData.transactions, setCreateStatus);
+
+      // Step 3: Fund the market (get liquidity txs)
+      setCreateStatus("Registering market and preparing liquidity...");
+      const fundRes = await fetch("/api/markets/create/fund", {
+        method: "POST",
+        headers: authHeaders(token),
+        body: JSON.stringify({
+          creation_tx_hash: creationHash,
+          chain,
+          wallet_address: user.wallet.address,
+          liquidity: Number(liquidity),
+        }),
+      });
+      const fundData = await fundRes.json();
+      if (!fundRes.ok) throw new Error(fundData.error || "Failed to fund market");
+
+      // Step 4: Sign liquidity transactions (approve + seed YES + seed NO)
+      setCreateStatus("Sign the liquidity transactions in your wallet...");
+      await signTransactions(fundData.transactions, setCreateStatus);
+
+      setCreateResult({
+        contract_address: fundData.contract_address,
+        market_id: fundData.market_id,
+      });
       fetchMyMarkets();
     } catch (e: unknown) {
       setCreateError(e instanceof Error ? e.message : "Failed to create market");
     } finally {
       setCreating(false);
+      setCreateStatus(null);
     }
   };
 
   const handleResolve = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!authenticated || !user?.wallet?.address) { login(); return; }
     if (!resolveAddr) return;
     setResolving(true);
     setResolveResult(null);
+    setResolveStatus("Preparing resolve transaction...");
     try {
       const res = await fetch(`/api/resolve/${encodeURIComponent(resolveAddr)}`, {
         method: "POST",
         headers: authHeaders(token),
-        body: JSON.stringify({ winning_outcome: resolveOutcome }),
+        body: JSON.stringify({ winning_outcome: resolveOutcome, wallet_address: user?.wallet?.address }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to resolve");
-      setResolveResult(`Market resolved! Tx: ${data.tx_hash}`);
+
+      // Sign the unsigned resolve tx with Privy wallet
+      setResolveStatus("Sign the resolve transaction in your wallet...");
+      await signTransactions(data.transactions, setResolveStatus);
+
+      setResolveResult("Market resolved successfully!");
       fetchMyMarkets();
     } catch (e: unknown) {
       setResolveResult(e instanceof Error ? e.message : "Failed to resolve");
     } finally {
       setResolving(false);
+      setResolveStatus(null);
     }
   };
 
@@ -246,7 +311,7 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
                 <div className="bg-surface-container rounded-xl p-3 mb-4 text-left">
                   <div className="text-[10px] text-white/40">Contract</div>
                   <a
-                    href={createResult.explorer_urls?.[0] || `https://basescan.org/address/${createResult.contract_address}`}
+                    href={`https://basescan.org/address/${createResult.contract_address}`}
                     target="_blank" rel="noopener noreferrer"
                     className="text-xs text-primary hover:underline font-mono break-all"
                   >{createResult.contract_address}</a>
@@ -335,8 +400,8 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
                   <div className="p-3 bg-error/5 rounded-xl"><p className="text-xs text-error">{createError}</p></div>
                 )}
                 <button type="submit" disabled={creating}
-                  className="w-full py-3 bg-accent hover:bg-accent-hover disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors">
-                  {creating ? "Deploying on-chain..." : "Create Market"}
+                  className="w-full py-4 noir-gradient text-on-primary font-headline font-bold text-sm rounded-xl disabled:opacity-30 active:scale-95 transition-all uppercase tracking-wider shadow-[0_8px_24px_rgba(39,147,251,0.3)]">
+                  {creating ? (createStatus || "Processing...") : "Create Market"}
                 </button>
               </form>
             )}
@@ -371,7 +436,7 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
               )}
               <button type="submit" disabled={resolving || !resolveAddr}
                 className="w-full py-3 noir-gradient text-on-primary font-headline font-bold text-sm rounded-xl disabled:opacity-30 active:scale-95 transition-all uppercase tracking-wider">
-                {resolving ? "Resolving..." : "Resolve Market"}
+                {resolving ? (resolveStatus || "Processing...") : "Resolve Market"}
               </button>
             </form>
           </div>

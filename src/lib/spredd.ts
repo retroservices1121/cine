@@ -347,9 +347,32 @@ export function getUsage() {
   return request<UsageStats>("/usage");
 }
 
-// ── Custom Markets ──
+// ── Custom Markets (v1.3.0 — Client-Side Signing) ──
 
-export function createMarket(body: {
+export interface UnsignedTx {
+  to: string;
+  data: string;
+  value: string;
+  gas: string;
+  chain_id: number;
+  description?: string;
+}
+
+export interface PrepareCreateResponse {
+  transactions: UnsignedTx[];
+  factory_address?: string;
+  token_address?: string;
+  token_symbol?: string;
+}
+
+export interface FundMarketResponse {
+  market_id: string;
+  contract_address: string;
+  transactions: UnsignedTx[];
+}
+
+// Step 1: Prepare unsigned creation tx
+export function prepareCreateMarket(body: {
   chain: string;
   question: string;
   option_a?: string;
@@ -359,29 +382,44 @@ export function createMarket(body: {
   liquidity: number;
   image_url?: string;
   wallet_address: string;
-  private_key: string;
 }) {
-  return request<CreateMarketResponse>("/markets/create", {
+  return request<PrepareCreateResponse>("/markets/create", {
     method: "POST",
     body: JSON.stringify(body),
   });
 }
 
+// Step 2: After signing creation tx, fund the market (get liquidity txs)
+export function fundMarket(body: {
+  creation_tx_hash: string;
+  chain: string;
+  wallet_address: string;
+  token?: string;
+  liquidity: number;
+}) {
+  return request<FundMarketResponse>("/markets/create/fund", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+// Resolve market — returns unsigned tx
 export function resolveMarket(
   contractAddress: string,
-  body: { winning_outcome: string; private_key: string }
+  body: { winning_outcome: string; wallet_address: string }
 ) {
-  return request<{ tx_hash: string; status: string }>(
+  return request<{ transactions: UnsignedTx[] }>(
     `/markets/${encodeURIComponent(contractAddress)}/resolve`,
     { method: "POST", body: JSON.stringify(body) }
   );
 }
 
+// Claim winnings — returns unsigned tx
 export function claimWinnings(
   contractAddress: string,
-  body: { wallet_address: string; private_key: string }
+  body: { wallet_address: string }
 ) {
-  return request<{ tx_hash: string; payout_amount: number }>(
+  return request<{ transactions: UnsignedTx[]; estimated_payout: number }>(
     `/markets/${encodeURIComponent(contractAddress)}/claim`,
     { method: "POST", body: JSON.stringify(body) }
   );
