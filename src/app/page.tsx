@@ -1,65 +1,155 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { useState } from "react";
+import { useMarkets } from "@/hooks/useSpredd";
+import MarketCard from "@/components/MarketCard";
+
+const CATEGORIES = [
+  "All",
+  "Politics",
+  "Crypto",
+  "Sports",
+  "Entertainment",
+  "Science",
+  "Economics",
+];
+
+const PLATFORMS = [
+  { value: "", label: "All Platforms" },
+  { value: "spredd", label: "Spredd (Custom)" },
+  { value: "polymarket", label: "Polymarket" },
+  { value: "kalshi", label: "Kalshi" },
+  { value: "limitless", label: "Limitless" },
+];
+
+export default function HomePage() {
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState("");
+  const [platform, setPlatform] = useState("");
+  const [sort, setSort] = useState("volume");
+
+  const { data: markets, isLoading, error } = useMarkets({
+    search: search || undefined,
+    category: category || undefined,
+    platform: platform || undefined,
+    sort,
+    limit: 40,
+  });
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Hero */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Prediction Markets</h1>
+        <p className="text-muted">
+          Trade on outcomes. Create custom markets on Base chain.
+        </p>
+      </div>
+
+      {/* Search and filters */}
+      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        <div className="relative flex-1">
+          <svg
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search markets..."
+            className="w-full bg-card border border-border rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors"
+          />
+        </div>
+        <select
+          value={platform}
+          onChange={(e) => setPlatform(e.target.value)}
+          className="bg-card border border-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors cursor-pointer"
+        >
+          {PLATFORMS.map((p) => (
+            <option key={p.value} value={p.value}>
+              {p.label}
+            </option>
+          ))}
+        </select>
+        <select
+          value={sort}
+          onChange={(e) => setSort(e.target.value)}
+          className="bg-card border border-border rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-accent transition-colors cursor-pointer"
+        >
+          <option value="volume">Volume</option>
+          <option value="liquidity">Liquidity</option>
+          <option value="newest">Newest</option>
+          <option value="ending_soon">Ending Soon</option>
+        </select>
+      </div>
+
+      {/* Category pills */}
+      <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+        {CATEGORIES.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setCategory(cat === "All" ? "" : cat.toLowerCase())}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+              (cat === "All" && !category) || category === cat.toLowerCase()
+                ? "bg-accent text-white"
+                : "bg-card border border-border text-muted hover:text-foreground hover:border-accent/50"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* Market grid */}
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-card border border-border rounded-xl p-5 animate-pulse"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+              <div className="h-4 bg-card-hover rounded w-3/4 mb-3" />
+              <div className="h-3 bg-card-hover rounded w-1/2 mb-4" />
+              <div className="h-2 bg-card-hover rounded-full mb-3" />
+              <div className="h-3 bg-card-hover rounded w-2/3" />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {error && (
+        <div className="text-center py-12">
+          <p className="text-red text-sm">
+            {error instanceof Error ? error.message : "Failed to load markets"}
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      )}
+
+      {markets && (
+        <>
+          {(markets as unknown[]).length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-muted">No markets found</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {(markets as Record<string, unknown>[]).map((m) => (
+                <MarketCard key={`${m.platform}-${m.market_id}`} market={m as never} />
+              ))}
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }
