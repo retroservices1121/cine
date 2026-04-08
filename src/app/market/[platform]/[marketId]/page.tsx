@@ -1,13 +1,17 @@
 "use client";
 
-import { use } from "react";
-import { useMarketDetail } from "@/hooks/useSpredd";
-import TradePanel from "@/components/TradePanel";
+import { use, useState, useEffect } from "react";
 import Link from "next/link";
+import PriceChart from "@/components/PriceChart";
+import OrderBookViz from "@/components/OrderBookViz";
+import TradePanel from "@/components/TradePanel";
+import MarketCard from "@/components/MarketCard";
+import { formatUsd, cn } from "@/lib/utils";
 
 interface MarketData {
   title?: string;
   question?: string;
+  description?: string;
   platform?: string;
   market_id?: string;
   outcomes?: { yes: number; no: number };
@@ -17,20 +21,16 @@ interface MarketData {
   category?: string;
   end_date?: string;
   active?: boolean;
+  status?: string;
   contract_address?: string;
 }
 
-interface OrderBookData {
-  bids?: { price: number; size: number }[];
-  asks?: { price: number; size: number }[];
-  spread?: number;
-}
-
-function formatUsd(n: number | undefined) {
-  if (!n) return "$0";
-  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `$${(n / 1_000).toFixed(1)}K`;
-  return `$${n.toFixed(2)}`;
+interface RelatedMarket {
+  market_id: string;
+  platform: string;
+  title?: string;
+  question?: string;
+  outcomes?: { yes: number; no: number };
 }
 
 export default function MarketPage({
@@ -39,217 +39,178 @@ export default function MarketPage({
   params: Promise<{ platform: string; marketId: string }>;
 }) {
   const { platform, marketId } = use(params);
-  const { data, isLoading, error } = useMarketDetail(platform, marketId);
+  const [market, setMarket] = useState<MarketData | null>(null);
+  const [related, setRelated] = useState<RelatedMarket[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (isLoading) {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch(`/api/markets/${platform}/${encodeURIComponent(marketId)}`);
+        if (!res.ok) throw new Error("Market not found");
+        const data = await res.json();
+        setMarket(data);
+
+        // Fetch related markets using keywords
+        const title = data.title || data.question || "";
+        const keywords = title.split(" ").slice(0, 3).join(" ");
+        if (keywords) {
+          const relRes = await fetch(`/api/markets?platform=spredd&search=${encodeURIComponent(keywords)}&limit=5`);
+          const relData = await relRes.json();
+          setRelated(
+            (Array.isArray(relData) ? relData : []).filter(
+              (m: RelatedMarket) => m.market_id !== marketId
+            ).slice(0, 4)
+          );
+        }
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : "Failed to load market");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, [platform, marketId]);
+
+  if (loading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="animate-pulse space-y-4">
-          <div className="h-6 bg-card rounded w-1/3" />
-          <div className="h-4 bg-card rounded w-1/2" />
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-            <div className="lg:col-span-2 h-64 bg-card rounded-xl" />
-            <div className="h-96 bg-card rounded-xl" />
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8">
+        <div className="h-4 skeleton rounded w-32 mb-6" />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-2 space-y-6">
+            <div className="h-48 skeleton rounded-xl" />
+            <div className="h-64 skeleton rounded-xl" />
           </div>
+          <div className="h-96 skeleton rounded-xl" />
         </div>
       </div>
     );
   }
 
-  if (error || !data) {
+  if (error || !market) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center">
-        <p className="text-red">
-          {error instanceof Error ? error.message : "Market not found"}
-        </p>
-        <Link href="/" className="text-accent hover:underline text-sm mt-2 inline-block">
-          Back to markets
-        </Link>
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-16 text-center">
+        <p className="text-red mb-2">{error || "Market not found"}</p>
+        <Link href="/explore" className="text-accent text-sm hover:underline">Back to markets</Link>
       </div>
     );
   }
 
-  const market = data.market as MarketData;
-  const orderbook = data.orderbook as OrderBookData | null;
   const yesPct = Math.round((market.outcomes?.yes ?? 0.5) * 100);
   const noPct = Math.round((market.outcomes?.no ?? 0.5) * 100);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 fade-in">
+    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8 fade-in">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-muted mb-6">
-        <Link href="/" className="hover:text-foreground transition-colors">
-          Markets
-        </Link>
+      <div className="flex items-center gap-2 text-xs text-text-muted mb-5">
+        <Link href="/" className="hover:text-text transition-colors">Home</Link>
         <span>/</span>
-        <span className="capitalize">{platform}</span>
+        <Link href="/explore" className="hover:text-text transition-colors">Explore</Link>
+        <span>/</span>
+        <span className="text-text-secondary truncate max-w-[200px]">
+          {market.title || market.question}
+        </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left: Market info */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Header */}
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h1 className="text-xl font-bold mb-3">
-              {market.title || market.question}
-            </h1>
+        <div className="lg:col-span-2 space-y-5">
+          {/* Header card */}
+          <div className="bg-card border border-border rounded-xl p-5">
+            <div className="flex items-start justify-between gap-4 mb-5">
+              <div className="flex-1">
+                <h1 className="text-xl font-bold leading-snug mb-2">
+                  {market.title || market.question}
+                </h1>
+                {market.description && (
+                  <p className="text-sm text-text-secondary line-clamp-3">{market.description}</p>
+                )}
+                <div className="flex items-center gap-3 mt-3 text-xs text-text-muted">
+                  <span className="capitalize px-2 py-0.5 bg-accent/10 text-accent rounded">{platform}</span>
+                  <span className={cn(
+                    "px-2 py-0.5 rounded",
+                    market.active !== false ? "bg-green-dim text-green" : "bg-red-dim text-red"
+                  )}>
+                    {market.active !== false ? "Active" : "Resolved"}
+                  </span>
+                  {market.category && <span>{market.category}</span>}
+                </div>
+              </div>
+            </div>
 
-            {/* Big probability display */}
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="bg-green/5 border border-green/20 rounded-xl p-4 text-center">
+            {/* Outcome cards */}
+            <div className="grid grid-cols-2 gap-3 mb-5">
+              <div className="bg-green-dim border border-green/20 rounded-xl p-4 text-center">
                 <div className="text-3xl font-bold text-green">{yesPct}%</div>
-                <div className="text-sm text-muted mt-1">Yes</div>
+                <div className="text-xs text-text-muted mt-1">Yes</div>
               </div>
-              <div className="bg-red/5 border border-red/20 rounded-xl p-4 text-center">
+              <div className="bg-red-dim border border-red/20 rounded-xl p-4 text-center">
                 <div className="text-3xl font-bold text-red">{noPct}%</div>
-                <div className="text-sm text-muted mt-1">No</div>
+                <div className="text-xs text-text-muted mt-1">No</div>
               </div>
             </div>
 
-            {/* Stats row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div>
-                <div className="text-xs text-muted mb-1">Volume</div>
-                <div className="font-semibold">{formatUsd(market.volume)}</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted mb-1">24h Volume</div>
-                <div className="font-semibold">
-                  {formatUsd(market.volume_24h)}
-                </div>
-              </div>
-              <div>
-                <div className="text-xs text-muted mb-1">Liquidity</div>
-                <div className="font-semibold">{formatUsd(market.liquidity)}</div>
-              </div>
-              <div>
-                <div className="text-xs text-muted mb-1">End Date</div>
-                <div className="font-semibold">
-                  {market.end_date
+            {/* Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { label: "Volume", value: formatUsd(market.volume) },
+                { label: "24h Volume", value: formatUsd(market.volume_24h) },
+                { label: "Liquidity", value: formatUsd(market.liquidity) },
+                {
+                  label: "End Date",
+                  value: market.end_date
                     ? new Date(market.end_date).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
+                        month: "short", day: "numeric", year: "numeric",
                       })
-                    : "TBD"}
+                    : "TBD",
+                },
+              ].map((s) => (
+                <div key={s.label}>
+                  <div className="text-[10px] text-text-muted">{s.label}</div>
+                  <div className="text-sm font-semibold">{s.value}</div>
                 </div>
-              </div>
+              ))}
             </div>
+
+            {/* Contract link */}
+            {market.contract_address && (
+              <div className="mt-4 pt-4 border-t border-border">
+                <div className="text-[10px] text-text-muted">Contract</div>
+                <a
+                  href={`https://basescan.org/address/${market.contract_address}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs text-accent hover:underline font-mono"
+                >
+                  {market.contract_address}
+                </a>
+              </div>
+            )}
           </div>
 
-          {/* Order Book */}
-          {orderbook && (
-            <div className="bg-card border border-border rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h2 className="font-semibold">Order Book</h2>
-                {orderbook.spread !== undefined && (
-                  <span className="text-xs text-muted">
-                    Spread: {(orderbook.spread * 100).toFixed(2)}%
-                  </span>
-                )}
-              </div>
+          {/* Price chart */}
+          <PriceChart platform={platform} marketId={marketId} />
 
-              <div className="grid grid-cols-2 gap-4">
-                {/* Bids */}
-                <div>
-                  <div className="text-xs text-muted mb-2 flex justify-between px-2">
-                    <span>Price</span>
-                    <span>Size</span>
-                  </div>
-                  <div className="space-y-0.5">
-                    {(orderbook.bids || []).slice(0, 10).map((bid, i) => (
-                      <div
-                        key={i}
-                        className="flex justify-between px-2 py-1 text-sm font-mono relative"
-                      >
-                        <div
-                          className="absolute inset-0 bg-green/5 rounded"
-                          style={{
-                            width: `${Math.min(bid.size * 2, 100)}%`,
-                          }}
-                        />
-                        <span className="relative text-green">
-                          {bid.price.toFixed(2)}
-                        </span>
-                        <span className="relative text-muted">
-                          {bid.size.toFixed(0)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          {/* Order book */}
+          <OrderBookViz platform={platform} marketId={marketId} />
 
-                {/* Asks */}
-                <div>
-                  <div className="text-xs text-muted mb-2 flex justify-between px-2">
-                    <span>Price</span>
-                    <span>Size</span>
-                  </div>
-                  <div className="space-y-0.5">
-                    {(orderbook.asks || []).slice(0, 10).map((ask, i) => (
-                      <div
-                        key={i}
-                        className="flex justify-between px-2 py-1 text-sm font-mono relative"
-                      >
-                        <div
-                          className="absolute inset-0 bg-red/5 rounded"
-                          style={{
-                            width: `${Math.min(ask.size * 2, 100)}%`,
-                          }}
-                        />
-                        <span className="relative text-red">
-                          {ask.price.toFixed(2)}
-                        </span>
-                        <span className="relative text-muted">
-                          {ask.size.toFixed(0)}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+          {/* Related markets */}
+          {related.length > 0 && (
+            <div>
+              <h3 className="text-sm font-semibold mb-3">Related Markets</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {related.map((m) => (
+                  <MarketCard key={`${m.platform}-${m.market_id}`} market={m} compact />
+                ))}
               </div>
             </div>
           )}
-
-          {/* Market info */}
-          <div className="bg-card border border-border rounded-xl p-6">
-            <h2 className="font-semibold mb-3">Market Info</h2>
-            <div className="grid grid-cols-2 gap-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted">Platform</span>
-                <span className="capitalize">{market.platform}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted">Category</span>
-                <span className="capitalize">{market.category || "General"}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted">Status</span>
-                <span className={market.active ? "text-green" : "text-red"}>
-                  {market.active ? "Active" : "Resolved"}
-                </span>
-              </div>
-              {market.contract_address && (
-                <div className="flex justify-between col-span-2">
-                  <span className="text-muted">Contract</span>
-                  <a
-                    href={`https://basescan.org/address/${market.contract_address}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-accent hover:underline font-mono text-xs"
-                  >
-                    {market.contract_address.slice(0, 8)}...
-                    {market.contract_address.slice(-6)}
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Right: Trade panel */}
         <div>
-          <div className="sticky top-20">
+          <div className="sticky top-[72px]">
             <TradePanel
               platform={platform}
               marketId={marketId}

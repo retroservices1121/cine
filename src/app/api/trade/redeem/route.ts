@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prepareTrade } from "@/lib/spredd";
+import { redeemPosition } from "@/lib/spredd";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const prepared = await prepareTrade(body);
-    return NextResponse.json(prepared);
+    const result = await redeemPosition(body);
+    return NextResponse.json(result);
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Failed to prepare trade";
+    const msg = e instanceof Error ? e.message : "Redemption failed";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

@@ -1,16 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getMarket } from "@/lib/spredd";
+import { getOrderBook } from "@/lib/spredd";
 
 export async function GET(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ platform: string; marketId: string }> }
 ) {
   const { platform, marketId } = await params;
+  const outcome = req.nextUrl.searchParams.get("outcome") || "yes";
   try {
-    const market = await getMarket(platform, marketId);
-    return NextResponse.json(market);
+    const ob = await getOrderBook(platform, marketId, outcome);
+    return NextResponse.json(ob);
   } catch (e: unknown) {
-    const msg = e instanceof Error ? e.message : "Market not found";
+    const msg = e instanceof Error ? e.message : "Failed to fetch orderbook";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 }

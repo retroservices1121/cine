@@ -3,10 +3,7 @@ const BASE_URL = "https://api.spreddterminal.com/v1";
 function getHeaders(): HeadersInit {
   const key = process.env.SPREDD_API_KEY;
   if (!key) throw new Error("SPREDD_API_KEY not set");
-  return {
-    "X-API-Key": key,
-    "Content-Type": "application/json",
-  };
+  return { "X-API-Key": key, "Content-Type": "application/json" };
 }
 
 async function request<T>(path: string, options?: RequestInit): Promise<T> {
@@ -21,7 +18,7 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
-// ── Markets ──
+// ── Types ──
 
 export interface Market {
   market_id: string;
@@ -37,6 +34,8 @@ export interface Market {
   active?: boolean;
   contract_address?: string;
   image_url?: string;
+  description?: string;
+  status?: string;
 }
 
 export interface OrderBook {
@@ -47,19 +46,129 @@ export interface OrderBook {
   spread: number;
 }
 
-export function listMarkets(params?: {
+export interface PricePoint {
+  timestamp: string;
+  price: number;
+}
+
+export interface Quote {
+  platform: string;
+  market_id: string;
+  outcome: string;
+  side: string;
+  input_amount: number;
+  expected_output: number;
+  price_per_token: number;
+  price_impact: number;
+  fee_amount: number;
+  fee_bps: number;
+  expires_at: string;
+}
+
+export interface TradeResult {
+  tx_hash: string;
+  status: string;
+  platform: string;
+  market_id: string;
+  input_amount: number;
+  output_amount: number;
+  fee_amount: number;
+  explorer_url: string;
+}
+
+export interface Order {
+  order_id: string;
+  platform: string;
+  market_id: string;
+  market_title?: string;
+  outcome: string;
+  side: string;
+  order_type: string;
+  amount: number;
+  filled_amount: number;
+  price: number;
+  executed_price?: number;
+  shares?: number;
+  fee_amount: number;
+  status: string;
+  tx_hash?: string;
+  created_at: string;
+  updated_at: string;
+  expires_at?: string;
+}
+
+export interface Position {
+  id: string;
+  wallet_address: string;
+  platform: string;
+  market_id: string;
+  market_title?: string;
+  outcome: string;
+  token_amount: number;
+  avg_entry_price: number;
+  current_price: number;
+  status: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface PnlSummary {
+  wallet_address: string;
   platform?: string;
-  search?: string;
-  category?: string;
-  active?: boolean;
-  limit?: number;
-  offset?: number;
-  sort?: string;
-}) {
+  interval: string;
+  total_realized: number;
+  total_unrealized: number;
+  total_pnl: number;
+  positions_count: number;
+}
+
+export interface ArbitrageOpp {
+  market_title: string;
+  outcome: string;
+  buy_platform: string;
+  buy_price: number;
+  sell_platform: string;
+  sell_price: number;
+  spread: number;
+  spread_pct: number;
+}
+
+export interface NewsArticle {
+  title: string;
+  source: string;
+  published_at: string;
+  url: string;
+  relevance_score: number;
+  matched_markets?: { platform: string; market_id: string; title: string }[];
+}
+
+export interface UsageStats {
+  account_id: string;
+  api_key_prefix: string;
+  tier: string;
+  tier_price_usd: number;
+  rate_limit_rpm: number;
+  monthly_request_quota: number;
+  monthly_requests_used: number;
+  total_requests: number;
+  total_trades: number;
+  total_volume: number;
+  total_fees: number;
+}
+
+export interface CreateMarketResponse {
+  contract_address: string;
+  tx_hashes: string[];
+  explorer_urls: string[];
+}
+
+// ── Markets ──
+
+export function listMarkets(params?: Record<string, string | number | boolean | undefined>) {
   const sp = new URLSearchParams();
   if (params) {
     Object.entries(params).forEach(([k, v]) => {
-      if (v !== undefined) sp.set(k, String(v));
+      if (v !== undefined && v !== "") sp.set(k, String(v));
     });
   }
   return request<Market[]>(`/markets?${sp}`);
@@ -75,40 +184,20 @@ export function getOrderBook(platform: string, marketId: string, outcome = "yes"
   );
 }
 
-export function getPriceHistory(platform: string, marketId: string, interval = "1d") {
-  return request<{ prices: { timestamp: string; price: number }[] }>(
+export function getPriceHistory(platform: string, marketId: string, interval = "1h") {
+  return request<{ prices: PricePoint[] }>(
     `/markets/${platform}/${encodeURIComponent(marketId)}/price-history?interval=${interval}`
   );
 }
 
+export function getSparklines(marketIds: { platform: string; market_id: string }[]) {
+  return request<Record<string, number[]>>("/markets/sparklines", {
+    method: "POST",
+    body: JSON.stringify({ markets: marketIds }),
+  });
+}
+
 // ── Trading ──
-
-export interface Quote {
-  platform: string;
-  market_id: string;
-  outcome: string;
-  side: string;
-  input_amount: number;
-  expected_output: number;
-  price_per_token: number;
-  price_impact: number;
-  fee_amount: number;
-  fee_bps: number;
-  expires_at: string;
-  quote_data?: unknown;
-}
-
-export interface PreparedTx {
-  transactions: {
-    to: string;
-    data: string;
-    value: string;
-    gas: string;
-    chain_id: number;
-    description: string;
-  }[];
-  quote: Quote;
-}
 
 export function getQuote(body: {
   platform: string;
@@ -123,30 +212,116 @@ export function getQuote(body: {
   });
 }
 
-export function prepareTrade(body: {
+export function executeTrade(body: {
   platform: string;
   market_id: string;
   outcome: string;
   side: string;
   amount: number;
-  wallet_address: string;
+  wallet_address?: string;
+  private_key: string;
 }) {
-  return request<PreparedTx>("/trading/prepare", {
+  return request<TradeResult>("/trading/execute", {
     method: "POST",
     body: JSON.stringify(body),
   });
 }
 
-// ── Custom Markets ──
-
-export interface CreateMarketResponse {
-  contract_address: string;
-  tx_hashes: string[];
-  explorer_urls: string[];
-  market_id?: string;
-  question?: string;
-  chain?: string;
+export function createOrder(body: {
+  platform: string;
+  market_id: string;
+  outcome: string;
+  side: string;
+  order_type: string;
+  amount: number;
+  price?: number;
+  wallet_address?: string;
+  private_key: string;
+}) {
+  return request<Order>("/trading/order", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
 }
+
+export function listOrders(params?: Record<string, string | undefined>) {
+  const sp = new URLSearchParams();
+  if (params) {
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined) sp.set(k, String(v));
+    });
+  }
+  return request<Order[]>(`/trading/orders?${sp}`);
+}
+
+export function cancelOrder(orderId: string) {
+  return request<{ cancelled: boolean }>(`/trading/orders/${orderId}`, {
+    method: "DELETE",
+  });
+}
+
+export function redeemPosition(body: {
+  platform: string;
+  market_id: string;
+  outcome: string;
+  wallet_address: string;
+  private_key: string;
+}) {
+  return request<{
+    redemption_id: string;
+    shares_redeemed: number;
+    payout_amount: number;
+    tx_hash: string;
+    status: string;
+  }>("/trading/redeem", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
+// ── Positions ──
+
+export function listPositions(params: Record<string, string | number | undefined>) {
+  const sp = new URLSearchParams();
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined) sp.set(k, String(v));
+  });
+  return request<Position[]>(`/positions?${sp}`);
+}
+
+export function getPnl(params: Record<string, string | undefined>) {
+  const sp = new URLSearchParams();
+  Object.entries(params).forEach(([k, v]) => {
+    if (v !== undefined) sp.set(k, String(v));
+  });
+  return request<PnlSummary>(`/trading/positions/pnl?${sp}`);
+}
+
+// ── Arbitrage ──
+
+export function getArbitrage(minSpread?: number) {
+  const sp = new URLSearchParams();
+  if (minSpread) sp.set("min_spread", String(minSpread));
+  return request<ArbitrageOpp[]>(`/arbitrage?${sp}`);
+}
+
+// ── News ──
+
+export function getNews(limit = 20) {
+  return request<NewsArticle[]>(`/news?limit=${limit}`);
+}
+
+export function getMarketNews(platform: string, marketId: string) {
+  return request<NewsArticle[]>(`/news/market/${platform}/${encodeURIComponent(marketId)}`);
+}
+
+// ── Usage ──
+
+export function getUsage() {
+  return request<UsageStats>("/usage");
+}
+
+// ── Custom Markets ──
 
 export function createMarket(body: {
   chain: string;
@@ -165,93 +340,22 @@ export function createMarket(body: {
   });
 }
 
-export function resolveMarket(contractAddress: string, body: {
-  winning_outcome: string;
-  private_key: string;
-}) {
+export function resolveMarket(
+  contractAddress: string,
+  body: { winning_outcome: string; private_key: string }
+) {
   return request<{ tx_hash: string; status: string }>(
     `/markets/${encodeURIComponent(contractAddress)}/resolve`,
     { method: "POST", body: JSON.stringify(body) }
   );
 }
 
-export function claimWinnings(contractAddress: string, body: {
-  wallet_address: string;
-  private_key: string;
-}) {
+export function claimWinnings(
+  contractAddress: string,
+  body: { wallet_address: string; private_key: string }
+) {
   return request<{ tx_hash: string; payout_amount: number }>(
     `/markets/${encodeURIComponent(contractAddress)}/claim`,
     { method: "POST", body: JSON.stringify(body) }
   );
-}
-
-// ── Positions ──
-
-export interface Position {
-  id: string;
-  wallet_address: string;
-  platform: string;
-  market_id: string;
-  outcome: string;
-  token_amount: number;
-  avg_entry_price: number;
-  current_price: number;
-  status: string;
-  created_at: string;
-  updated_at: string;
-  market_title?: string;
-}
-
-export interface PnlSummary {
-  wallet_address: string;
-  platform?: string;
-  interval: string;
-  total_realized: number;
-  total_unrealized: number;
-  total_pnl: number;
-  positions_count: number;
-}
-
-export function listPositions(params: {
-  wallet_address: string;
-  platform?: string;
-  status?: string;
-  limit?: number;
-  offset?: number;
-}) {
-  const sp = new URLSearchParams();
-  Object.entries(params).forEach(([k, v]) => {
-    if (v !== undefined) sp.set(k, String(v));
-  });
-  return request<Position[]>(`/positions?${sp}`);
-}
-
-export function getPnl(params: {
-  wallet_address: string;
-  platform?: string;
-  interval?: string;
-}) {
-  const sp = new URLSearchParams();
-  Object.entries(params).forEach(([k, v]) => {
-    if (v !== undefined) sp.set(k, String(v));
-  });
-  return request<PnlSummary>(`/trading/positions/pnl?${sp}`);
-}
-
-// ── News ──
-
-export interface NewsArticle {
-  title: string;
-  source: string;
-  published_at: string;
-  url: string;
-  relevance_score: number;
-}
-
-export function getNews(limit = 5) {
-  return request<NewsArticle[]>(`/news?limit=${limit}`);
-}
-
-export function getMarketNews(platform: string, marketId: string) {
-  return request<NewsArticle[]>(`/news/market/${platform}/${encodeURIComponent(marketId)}`);
 }
