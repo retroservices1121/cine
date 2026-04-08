@@ -63,7 +63,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center fade-in">
         <div className="w-full max-w-sm">
-          <div className="bg-card border border-border rounded-xl p-6">
+          <div className="bg-surface-container-low rounded-xl p-6">
             <div className="text-center mb-6">
               <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-amber/10 flex items-center justify-center">
                 <svg className="w-6 h-6 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -71,7 +71,7 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <h1 className="text-lg font-bold">Dashboard Access</h1>
-              <p className="text-text-muted text-xs mt-1">Enter the admin password to continue</p>
+              <p className="text-white/40 text-xs mt-1">Enter the admin password to continue</p>
             </div>
             <form onSubmit={handleLogin} className="space-y-4">
               <input
@@ -80,10 +80,10 @@ export default function DashboardPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password"
                 autoFocus
-                className="w-full bg-bg border border-border rounded-lg px-4 py-3 text-sm focus:outline-none focus:border-accent/50 transition-colors"
+                className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
               />
               {authError && (
-                <p className="text-xs text-red">{authError}</p>
+                <p className="text-xs text-secondary">{authError}</p>
               )}
               <button
                 type="submit"
@@ -112,7 +112,6 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
   const [endTime, setEndTime] = useState("");
   const [liquidity, setLiquidity] = useState("100");
   const [imageUrl, setImageUrl] = useState("");
-  const [privateKey, setPrivateKey] = useState("");
   const [chain, setChain] = useState("base");
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
@@ -126,7 +125,6 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
 
   const [resolveAddr, setResolveAddr] = useState("");
   const [resolveOutcome, setResolveOutcome] = useState<"yes" | "no">("yes");
-  const [resolveKey, setResolveKey] = useState("");
   const [resolving, setResolving] = useState(false);
   const [resolveResult, setResolveResult] = useState<string | null>(null);
 
@@ -147,7 +145,7 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!authenticated || !user?.wallet?.address) { login(); return; }
-    if (!question || !endTime || !liquidity || !privateKey) {
+    if (!question || !endTime || !liquidity) {
       setCreateError("All fields are required"); return;
     }
     if (Number(liquidity) < 100) {
@@ -168,13 +166,11 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
           liquidity: Number(liquidity),
           image_url: imageUrl || undefined,
           wallet_address: user.wallet.address,
-          private_key: privateKey,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to create market");
       setCreateResult(data);
-      setPrivateKey("");
       fetchMyMarkets();
     } catch (e: unknown) {
       setCreateError(e instanceof Error ? e.message : "Failed to create market");
@@ -185,19 +181,18 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
 
   const handleResolve = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!resolveAddr || !resolveKey) return;
+    if (!resolveAddr) return;
     setResolving(true);
     setResolveResult(null);
     try {
       const res = await fetch(`/api/resolve/${encodeURIComponent(resolveAddr)}`, {
         method: "POST",
         headers: authHeaders(token),
-        body: JSON.stringify({ winning_outcome: resolveOutcome, private_key: resolveKey }),
+        body: JSON.stringify({ winning_outcome: resolveOutcome }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to resolve");
       setResolveResult(`Market resolved! Tx: ${data.tx_hash}`);
-      setResolveKey("");
       fetchMyMarkets();
     } catch (e: unknown) {
       setResolveResult(e instanceof Error ? e.message : "Failed to resolve");
@@ -218,11 +213,11 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
           </div>
           <div>
             <h1 className="text-2xl font-bold">Dashboard</h1>
-            <p className="text-text-muted text-sm">Create and manage prediction markets</p>
+            <p className="text-white/40 text-sm">Create and manage prediction markets</p>
           </div>
         </div>
-        <button onClick={onLogout} className="text-xs text-text-muted hover:text-red transition-colors">
-          Lock Dashboard
+        <button onClick={onLogout} className="text-xs text-white/40 hover:text-secondary transition-colors">
+          Lock
         </button>
       </div>
 
@@ -237,23 +232,23 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Left: Create market */}
         <div className="space-y-6">
-          <div className="bg-card border border-border rounded-xl p-5">
+          <div className="bg-surface-container-low rounded-xl p-5">
             <h2 className="text-base font-semibold mb-4">Create New Market</h2>
 
             {createResult ? (
               <div className="text-center py-6">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-green-dim flex items-center justify-center">
-                  <svg className="w-6 h-6 text-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-primary/10 flex items-center justify-center">
+                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
                 <h3 className="font-semibold mb-2">Market Created!</h3>
-                <div className="bg-bg rounded-lg p-3 mb-4 text-left">
-                  <div className="text-[10px] text-text-muted">Contract</div>
+                <div className="bg-surface-container rounded-xl p-3 mb-4 text-left">
+                  <div className="text-[10px] text-white/40">Contract</div>
                   <a
                     href={createResult.explorer_urls?.[0] || `https://basescan.org/address/${createResult.contract_address}`}
                     target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-accent hover:underline font-mono break-all"
+                    className="text-xs text-primary hover:underline font-mono break-all"
                   >{createResult.contract_address}</a>
                 </div>
                 <div className="flex gap-2 justify-center">
@@ -336,15 +331,6 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
                     className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm font-mono text-white focus:outline-none focus:ring-1 focus:ring-primary" />
                   <p className="text-[10px] text-white/30 mt-1">Min $100. Split 50/50 between pools.</p>
                 </div>
-                <div>
-                  <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Private Key *</label>
-                  <input type="password" value={privateKey} onChange={(e) => setPrivateKey(e.target.value)} placeholder="0x..."
-                    className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-xs font-mono text-white/80 focus:outline-none focus:ring-1 focus:ring-primary" />
-                  <p className="text-[9px] text-white/30 mt-1 flex items-center gap-1">
-                    <span className="material-symbols-outlined text-[12px] text-secondary/60">lock</span>
-                    Sent directly to the exchange. Never stored.
-                  </p>
-                </div>
                 {createError && (
                   <div className="p-3 bg-error/5 rounded-xl"><p className="text-xs text-error">{createError}</p></div>
                 )}
@@ -357,39 +343,34 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
           </div>
 
           {/* Resolve market */}
-          <div className="bg-card border border-border rounded-xl p-5">
+          <div className="bg-surface-container-low rounded-xl p-5">
             <h2 className="text-base font-semibold mb-4">Resolve Market</h2>
             <form onSubmit={handleResolve} className="space-y-3">
               <div>
                 <label className="text-xs font-medium mb-1.5 block">Contract Address</label>
                 <input type="text" value={resolveAddr} onChange={(e) => setResolveAddr(e.target.value)} placeholder="0x..."
-                  className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-xs font-mono focus:outline-none focus:border-accent/50 transition-colors" />
+                  className="w-full bg-surface-container-highest border-none rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-primary transition-colors" />
               </div>
               <div>
-                <label className="text-xs font-medium mb-1.5 block">Winning Outcome</label>
+                <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Winning Outcome</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button type="button" onClick={() => setResolveOutcome("yes")}
-                    className={cn("py-2 rounded-lg text-xs font-bold border transition-all",
-                      resolveOutcome === "yes" ? "bg-green-dim border-green/40 text-green" : "bg-bg border-border text-text-muted"
+                    className={cn("py-2.5 rounded-xl text-xs font-bold transition-all",
+                      resolveOutcome === "yes" ? "noir-gradient text-on-primary" : "bg-surface-container-highest text-white/30"
                     )}>Yes</button>
                   <button type="button" onClick={() => setResolveOutcome("no")}
-                    className={cn("py-2 rounded-lg text-xs font-bold border transition-all",
-                      resolveOutcome === "no" ? "bg-red-dim border-red/40 text-red" : "bg-bg border-border text-text-muted"
+                    className={cn("py-2.5 rounded-xl text-xs font-bold transition-all",
+                      resolveOutcome === "no" ? "bg-secondary-container text-on-secondary-container" : "bg-surface-container-highest text-white/30"
                     )}>No</button>
                 </div>
               </div>
-              <div>
-                <label className="text-xs font-medium mb-1.5 block">Private Key</label>
-                <input type="password" value={resolveKey} onChange={(e) => setResolveKey(e.target.value)} placeholder="0x..."
-                  className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-xs font-mono focus:outline-none focus:border-accent/50 transition-colors" />
-              </div>
               {resolveResult && (
-                <p className={cn("text-xs", resolveResult.startsWith("Market") ? "text-green" : "text-red")}>
+                <p className={cn("text-xs", resolveResult.startsWith("Market") ? "text-primary-container" : "text-secondary")}>
                   {resolveResult}
                 </p>
               )}
-              <button type="submit" disabled={resolving || !resolveAddr || !resolveKey}
-                className="w-full py-2.5 bg-amber hover:bg-amber/90 disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors">
+              <button type="submit" disabled={resolving || !resolveAddr}
+                className="w-full py-3 noir-gradient text-on-primary font-headline font-bold text-sm rounded-xl disabled:opacity-30 active:scale-95 transition-all uppercase tracking-wider">
                 {resolving ? "Resolving..." : "Resolve Market"}
               </button>
             </form>
@@ -398,10 +379,10 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
 
         {/* Right: My markets list */}
         <div>
-          <div className="bg-card border border-border rounded-xl p-5">
+          <div className="bg-surface-container-low rounded-xl p-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-semibold">Your Markets</h2>
-              <span className="text-xs text-text-muted">{myMarkets.length} markets</span>
+              <span className="text-xs text-white/40">{myMarkets.length} markets</span>
             </div>
             {loadingMarkets ? (
               <div className="space-y-3">
@@ -410,18 +391,18 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
                 ))}
               </div>
             ) : myMarkets.length === 0 ? (
-              <p className="text-text-muted text-sm text-center py-8">No markets created yet</p>
+              <p className="text-white/40 text-sm text-center py-8">No markets created yet</p>
             ) : (
               <div className="space-y-2 max-h-[600px] overflow-y-auto">
                 {myMarkets.map((m) => (
                   <Link key={m.market_id}
                     href={`/market/${m.platform}/${encodeURIComponent(m.market_id)}`}
-                    className="block p-3 bg-bg rounded-lg border border-border hover:border-border-hover transition-colors">
+                    className="block p-3 bg-surface-container rounded-xl  hover:bg-surface-container-high transition-colors">
                     <p className="text-xs font-medium line-clamp-2 mb-2">{m.title || m.question}</p>
-                    <div className="flex items-center justify-between text-[10px] text-text-muted">
+                    <div className="flex items-center justify-between text-[10px] text-white/40">
                       <div className="flex items-center gap-2">
                         <span className={cn("px-1.5 py-0.5 rounded",
-                          m.active !== false ? "bg-green-dim text-green" : "bg-red-dim text-red"
+                          m.active !== false ? "bg-primary/10 text-primary" : "bg-secondary/10 text-secondary"
                         )}>{m.active !== false ? "Active" : "Resolved"}</span>
                         {m.volume != null && <span>{formatUsd(m.volume)} vol</span>}
                       </div>
