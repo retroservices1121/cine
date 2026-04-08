@@ -113,11 +113,8 @@ export default function HomePage() {
             </div>
           ) : (
             <div className="text-center py-20">
-              <h1 className="text-4xl font-headline font-bold text-white tracking-tighter mb-4">No Markets Yet</h1>
-              <p className="text-white/50 mb-6">Create your first prediction market from the dashboard.</p>
-              <Link href="/dashboard" className="noir-gradient text-on-primary px-8 py-3 rounded-xl font-headline font-bold text-sm uppercase tracking-wider">
-                Go to Dashboard
-              </Link>
+              <h1 className="text-4xl font-headline font-bold text-white tracking-tighter mb-4">Coming Soon</h1>
+              <p className="text-white/50">New prediction markets are on the way. Check back shortly.</p>
             </div>
           )}
         </div>

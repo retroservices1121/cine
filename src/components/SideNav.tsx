@@ -41,14 +41,7 @@ export default function SideNav() {
         })}
       </nav>
 
-      <div className="mt-auto px-6 space-y-4">
-        <Link
-          href="/dashboard"
-          className="block w-full py-3 px-4 text-center text-white/50 text-xs hover:text-white hover:bg-white/5 rounded-xl transition-all"
-        >
-          <span className="material-symbols-outlined text-[16px] mr-1 align-middle">settings</span>
-          Admin
-        </Link>
+      <div className="mt-auto px-6">
         <div className="pt-4 space-y-2" style={{ borderTop: "1px solid rgba(64,71,83,0.15)" }}>
           <p className="text-white/20 text-[10px] uppercase tracking-[0.15em]">
             Powered by Spredd Terminal
