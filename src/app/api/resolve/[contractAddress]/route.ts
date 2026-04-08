@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { resolveMarket } from "@/lib/spredd";
+import { verifyDashboardToken } from "@/lib/dashboard-auth";
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ contractAddress: string }> }
 ) {
+  if (!verifyDashboardToken(req)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   const { contractAddress } = await params;
   try {
     const body = await req.json();

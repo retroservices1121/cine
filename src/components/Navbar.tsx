@@ -53,16 +53,6 @@ export default function Navbar() {
                 {l.label}
               </Link>
             ))}
-            <Link
-              href="/dashboard"
-              className={`px-3 py-1.5 rounded-md text-[13px] font-medium transition-colors ${
-                pathname === "/dashboard"
-                  ? "bg-amber/10 text-amber"
-                  : "text-text-muted hover:text-text hover:bg-card"
-              }`}
-            >
-              Dashboard
-            </Link>
           </div>
 
           {/* Search - desktop */}
@@ -134,7 +124,7 @@ export default function Navbar() {
                 className="w-full bg-card border border-border rounded-md px-3 py-2 text-sm focus:outline-none focus:border-accent/50"
               />
             </form>
-            {[...NAV_LINKS, { href: "/dashboard", label: "Dashboard" }].map((l) => (
+            {NAV_LINKS.map((l) => (
               <Link
                 key={l.href}
                 href={l.href}
