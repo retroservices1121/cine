@@ -23,6 +23,7 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
   const { authenticated, user, login } = useAuth();
   const { sendTransaction } = useSendTx();
 
+  const [side, setSide] = useState<"buy" | "sell">("buy");
   const [outcome, setOutcome] = useState<"yes" | "no">("yes");
   const [orderType, setOrderType] = useState<OrderType>("market");
   const [amount, setAmount] = useState("");
@@ -43,7 +44,7 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
     if (!amount || Number(amount) <= 0) return;
     setLoading(true); setError(null);
     try {
-      const q = await apiPost<typeof quote>("/api/trade/quote", { platform, market_id: marketId, outcome, side: "buy", amount: Number(amount) });
+      const q = await apiPost<typeof quote>("/api/trade/quote", { platform, market_id: marketId, outcome, side, amount: Number(amount) });
       setQuote(q);
     } catch (e: unknown) { setError(e instanceof Error ? e.message : "Quote failed"); }
     finally { setLoading(false); }
@@ -59,7 +60,7 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
         transactions: { to: string; data: string; value: string; gas: string; chain_id: number; description: string }[];
         quote: unknown;
       }>("/api/trade/prepare", {
-        platform, market_id: marketId, outcome, side: "buy",
+        platform, market_id: marketId, outcome, side,
         amount: Number(amount), wallet_address: user.wallet.address,
       });
 
@@ -95,7 +96,7 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
     setLoading(true); setError(null);
     try {
       await apiPost("/api/trade/orders", {
-        platform, market_id: marketId, outcome, side: "buy", order_type: orderType,
+        platform, market_id: marketId, outcome, side, order_type: orderType,
         amount: Number(amount), price: Number(limitPrice) / 100,
         wallet_address: user?.wallet?.address, private_key: privateKey,
       });
@@ -130,6 +131,20 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
   return (
     <div className="glass-panel rounded-xl p-6 lg:p-8 top-light">
       <h3 className="font-headline font-bold text-xl text-white mb-6 uppercase tracking-tight">Place Prediction</h3>
+
+      {/* Buy / Sell toggle */}
+      <div className="flex rounded-xl overflow-hidden mb-4">
+        {(["buy", "sell"] as const).map((s) => (
+          <button key={s} onClick={() => { setSide(s); resetState(); }}
+            className={`flex-1 py-2.5 text-xs font-headline font-bold uppercase tracking-wider transition-all ${
+              side === s
+                ? s === "buy" ? "noir-gradient text-on-primary" : "bg-secondary-container text-on-secondary-container"
+                : "bg-surface-container-highest text-white/30 hover:text-white"
+            }`}>
+            {s}
+          </button>
+        ))}
+      </div>
 
       {/* Order type tabs */}
       <div className="flex bg-surface-container-highest rounded-full p-1 mb-6">
@@ -212,6 +227,16 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
             <span>Fee</span>
             <span className="text-white">{formatUsd(quote.fee_amount)}</span>
           </div>
+        </div>
+      )}
+
+      {/* Fee notice for sells */}
+      {side === "sell" && quote && (
+        <div className="mb-4 p-3 bg-surface-container rounded-xl">
+          <p className="text-white/40 text-[10px] uppercase tracking-[0.1em] mb-1">Platform Fee</p>
+          <p className="text-white/60 text-xs">
+            1% fee on profit from winning trades. Deducted automatically via a separate USDC transfer you will sign.
+          </p>
         </div>
       )}
 
