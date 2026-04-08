@@ -3,7 +3,7 @@
 import { usePrivy, useSendTransaction } from "@privy-io/react-auth";
 
 const rawId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || "";
-const HAS_PRIVY = rawId.startsWith("cl");
+const HAS_PRIVY = rawId.length > 10 && !rawId.includes("your_");
 
 const NOOP_AUTH = {
   login: () => {},

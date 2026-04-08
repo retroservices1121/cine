@@ -6,7 +6,9 @@
       "WebFetch(domain:docs.spreddterminal.com)",
       "Bash(npm install:*)",
       "Bash(npx next:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(curl -s -L \"https://docs.privy.io/welcome\")",
+      "Bash(curl -s -L \"https://docs.privy.io/basics/react/setup\")"
     ]
   }
 }

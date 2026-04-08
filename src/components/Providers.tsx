@@ -6,7 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
 const rawId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || "";
-const PRIVY_APP_ID = rawId.startsWith("cl") ? rawId : null;
+// Real Privy app IDs are 25+ chars. Reject obvious placeholders.
+const PRIVY_APP_ID = rawId.length > 10 && !rawId.includes("your_") ? rawId : null;
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
@@ -28,7 +29,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         appearance: {
           walletChainType: "ethereum-only",
           theme: "dark",
-          accentColor: "#6366f1",
+          accentColor: "#2793fb",
         },
         embeddedWallets: {
           ethereum: {
