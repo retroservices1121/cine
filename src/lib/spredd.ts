@@ -212,6 +212,32 @@ export function getQuote(body: {
   });
 }
 
+export interface PreparedTx {
+  transactions: {
+    to: string;
+    data: string;
+    value: string;
+    gas: string;
+    chain_id: number;
+    description: string;
+  }[];
+  quote: Quote;
+}
+
+export function prepareTrade(body: {
+  platform: string;
+  market_id: string;
+  outcome: string;
+  side: string;
+  amount: number;
+  wallet_address: string;
+}) {
+  return request<PreparedTx>("/trading/prepare", {
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+}
+
 export function executeTrade(body: {
   platform: string;
   market_id: string;
