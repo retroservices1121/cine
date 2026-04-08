@@ -20,34 +20,20 @@ interface Market {
   image_url?: string;
 }
 
-interface ArbitrageOpp {
-  market_title: string;
-  outcome: string;
-  buy_platform: string;
-  buy_price: number;
-  sell_platform: string;
-  sell_price: number;
-  spread: number;
-  spread_pct: number;
-}
-
 export default function HomePage() {
   const router = useRouter();
   const [search, setSearch] = useState("");
   const [trending, setTrending] = useState<Market[]>([]);
   const [searchResults, setSearchResults] = useState<Market[] | null>(null);
-  const [arbs, setArbs] = useState<ArbitrageOpp[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/markets?platform=spredd&sort=volume&limit=12").then((r) => r.json()),
-      fetch("/api/arbitrage").then((r) => r.json()).catch(() => []),
-    ]).then(([markets, arbitrage]) => {
-      setTrending(Array.isArray(markets) ? markets : []);
-      setArbs(Array.isArray(arbitrage) ? arbitrage.slice(0, 3) : []);
-      setLoading(false);
-    });
+    fetch("/api/markets?platform=spredd&sort=volume&limit=12")
+      .then((r) => r.json())
+      .then((markets) => {
+        setTrending(Array.isArray(markets) ? markets : []);
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -122,43 +108,6 @@ export default function HomePage() {
       </section>
 
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 pb-12">
-        {/* Arbitrage banner */}
-        {arbs.length > 0 && (
-          <section className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-bold flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-amber animate-pulse" />
-                Hot Arbitrage
-              </h2>
-              <Link href="/arbitrage" className="text-xs text-accent hover:text-accent-hover transition-colors">
-                View all
-              </Link>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {arbs.map((a, i) => (
-                <div key={i} className="bg-card border border-amber/20 rounded-xl p-4 hover:border-amber/40 transition-colors">
-                  <p className="text-xs font-medium line-clamp-2 mb-3">{a.market_title}</p>
-                  <div className="flex items-center justify-between text-[11px]">
-                    <div>
-                      <span className="text-text-muted">Buy </span>
-                      <span className="text-green font-medium">{a.buy_platform}</span>
-                      <span className="text-text-muted"> @ {(a.buy_price * 100).toFixed(0)}¢</span>
-                    </div>
-                    <span className="px-2 py-0.5 bg-amber-dim rounded-full text-amber font-bold text-[11px]">
-                      +{(a.spread_pct * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="text-[11px] mt-1">
-                    <span className="text-text-muted">Sell </span>
-                    <span className="text-red font-medium">{a.sell_platform}</span>
-                    <span className="text-text-muted"> @ {(a.sell_price * 100).toFixed(0)}¢</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
-
         {/* Trending Markets */}
         <section>
           <div className="flex items-center justify-between mb-4">

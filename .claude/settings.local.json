@@ -3,7 +3,10 @@
     "allow": [
       "WebSearch",
       "WebFetch(domain:docs.privy.io)",
-      "WebFetch(domain:docs.spreddterminal.com)"
+      "WebFetch(domain:docs.spreddterminal.com)",
+      "Bash(npm install:*)",
+      "Bash(npx next:*)",
+      "Bash(git add:*)"
     ]
   }
 }
