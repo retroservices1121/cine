@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Noir Ledger | My Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e2e2e2",
+                    "on-secondary": "#601400",
+                    "on-error-container": "#ffdad6",
+                    "surface-bright": "#393939",
+                    "on-secondary-fixed-variant": "#872000",
+                    "surface-container-high": "#2a2a2a",
+                    "inverse-surface": "#e2e2e2",
+                    "secondary-fixed-dim": "#ffb5a0",
+                    "on-tertiary-fixed-variant": "#504629",
+                    "on-background": "#e2e2e2",
+                    "on-primary-container": "#002a51",
+                    "surface-tint": "#a4c9ff",
+                    "surface-container-low": "#1b1b1b",
+                    "surface-container": "#1f1f1f",
+                    "error": "#ffb4ab",
+                    "tertiary": "#d4c6a0",
+                    "inverse-on-surface": "#303030",
+                    "background": "#131313",
+                    "on-surface-variant": "#c0c7d5",
+                    "on-primary-fixed-variant": "#004883",
+                    "primary-fixed-dim": "#a4c9ff",
+                    "tertiary-fixed": "#f1e1ba",
+                    "secondary-fixed": "#ffdbd1",
+                    "error-container": "#93000a",
+                    "secondary": "#ffb5a0",
+                    "outline-variant": "#404753",
+                    "on-primary-fixed": "#001c39",
+                    "surface-container-highest": "#353535",
+                    "on-primary": "#00315d",
+                    "primary-container": "#2793fb",
+                    "primary": "#a4c9ff",
+                    "surface-dim": "#131313",
+                    "tertiary-container": "#9c906d",
+                    "primary-fixed": "#d4e3ff",
+                    "surface-container-lowest": "#0e0e0e",
+                    "outline": "#8a919e",
+                    "on-tertiary-container": "#31290f",
+                    "inverse-primary": "#005fac",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#3b0900",
+                    "surface-variant": "#353535",
+                    "on-tertiary-fixed": "#221b03",
+                    "tertiary-fixed-dim": "#d4c6a0",
+                    "surface": "#131313",
+                    "secondary-container": "#ff5625",
+                    "on-tertiary": "#383015",
+                    "on-secondary-container": "#541100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .noir-glass {
+            background: rgba(19, 19, 19, 0.6);
+            backdrop-filter: blur(24px);
+        }
+        .text-glow-primary {
+            text-shadow: 0 0 15px rgba(164, 201, 255, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary/30 selection:text-white min-h-screen">
+<!-- Top Navigation Shell -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-8 h-20 w-full max-w-full bg-surface/60 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(9,136,240,0.08)]">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold tracking-tighter text-white font-headline">THE CINEMATIC EXCHANGE</span>
+<div class="hidden md:flex items-center gap-8 font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm">
+<a class="text-white/60 hover:text-white transition-colors" href="#">Markets</a>
+<a class="text-white/60 hover:text-white transition-colors" href="#">Awards</a>
+<a class="text-white/60 hover:text-white transition-colors" href="#">Box Office</a>
+<a class="text-white/60 hover:text-white transition-colors" href="#">Rankings</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-white/60">
+<span class="material-symbols-outlined hover:bg-white/5 transition-all duration-300 p-2 rounded-full cursor-pointer">notifications</span>
+<span class="material-symbols-outlined hover:bg-white/5 transition-all duration-300 p-2 rounded-full cursor-pointer">account_balance_wallet</span>
+</div>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-headline font-bold px-6 py-2 rounded-xl active:scale-95 duration-200 uppercase text-xs tracking-widest">
+                Connect Wallet
+            </button>
+</div>
+</nav>
+<!-- Side Navigation Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r-0 bg-[#131313] flex flex-col h-full py-8 gap-4 pt-24 z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<h2 class="font-['Space_Grotesk'] font-bold text-white text-xl">The Noir Ledger</h2>
+<p class="text-[10px] uppercase tracking-[0.2em] text-white/40">High-Stakes Prediction</p>
+</div>
+<div class="flex flex-col gap-1 flex-grow">
+<a class="text-white/50 hover:text-white px-6 py-3 transition-all hover:bg-white/5 cursor-pointer flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm" href="#">
+<span class="material-symbols-outlined">theaters</span> Premiere Markets
+            </a>
+<a class="bg-surface-container-high text-[#0988F0] font-semibold rounded-r-full px-6 py-3 transition-all cursor-pointer flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm" href="#">
+<span class="material-symbols-outlined">pie_chart</span> My Portfolio
+            </a>
+<a class="text-white/50 hover:text-white px-6 py-3 transition-all hover:bg-white/5 cursor-pointer flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm" href="#">
+<span class="material-symbols-outlined">military_tech</span> Leaderboard
+            </a>
+<a class="text-white/50 hover:text-white px-6 py-3 transition-all hover:bg-white/5 cursor-pointer flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm" href="#">
+<span class="material-symbols-outlined">movie_filter</span> Film Credits
+            </a>
+<a class="text-white/50 hover:text-white px-6 py-3 transition-all hover:bg-white/5 cursor-pointer flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+            </a>
+</div>
+<div class="px-4 mt-auto">
+<button class="w-full bg-surface-container-highest text-on-surface font-headline font-bold py-4 rounded-xl hover:bg-white/10 transition-all text-xs tracking-tighter uppercase mb-8">
+                Place New Prediction
+            </button>
+<div class="flex flex-col gap-1 border-t border-white/5 pt-4">
+<a class="text-white/30 hover:text-white px-2 py-2 flex items-center gap-3 text-xs" href="#">
+<span class="material-symbols-outlined text-sm">help_outline</span> Help Center
+                </a>
+<a class="text-white/30 hover:text-white px-2 py-2 flex items-center gap-3 text-xs" href="#">
+<span class="material-symbols-outlined text-sm">gavel</span> Legal
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-64 pt-24 min-h-screen">
+<div class="max-w-7xl mx-auto px-8 py-12">
+<!-- Global Balance Header & Premiere Status -->
+<div class="grid grid-cols-12 gap-8 mb-12 items-end">
+<div class="col-span-12 lg:col-span-8">
+<span class="label-sm uppercase tracking-[0.2em] text-on-surface-variant text-[10px]">Financial Overview</span>
+<h1 class="text-6xl font-headline font-bold text-white tracking-tighter mt-2 flex items-baseline gap-4">
+                        $24,840.12 <span class="text-primary text-xl font-medium tracking-normal">+14.2%</span>
+</h1>
+<div class="flex gap-8 mt-6">
+<div>
+<p class="text-xs uppercase text-white/40 tracking-widest mb-1">Total Stakes</p>
+<p class="text-xl font-headline font-medium">$12,400.00</p>
+</div>
+<div class="w-px h-10 bg-white/10"></div>
+<div>
+<p class="text-xs uppercase text-white/40 tracking-widest mb-1">Available Cash</p>
+<p class="text-xl font-headline font-medium">$12,440.12</p>
+</div>
+<div class="w-px h-10 bg-white/10"></div>
+<div>
+<p class="text-xs uppercase text-white/40 tracking-widest mb-1">Open Positions</p>
+<p class="text-xl font-headline font-medium">8 Trades</p>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-4">
+<div class="relative overflow-hidden p-6 rounded-xl bg-gradient-to-br from-surface-container-high to-surface-container-low group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:rotate-12 transition-transform duration-700">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-tertiary">stars</span>
+<span class="text-xs font-headline font-bold uppercase tracking-widest text-tertiary">Premiere Status</span>
+</div>
+<h3 class="text-2xl font-headline font-bold text-white mb-2">Executive Producer</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed mb-4">Earn 2% bonus yield on all film market stakes. Next tier: Studio Head.</p>
+<div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-3/4 shadow-[0_0_10px_rgba(212,198,160,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-8">
+<!-- Expert Sentiment Tracking Chart (Prominent Element) -->
+<div class="col-span-12 lg:col-span-7 space-y-6">
+<div class="p-8 rounded-xl bg-surface-container-low">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="text-xl font-headline font-bold text-white">Expert Sentiment Tracking</h2>
+<p class="text-sm text-on-surface-variant">Global consensus for upcoming festival premieres</p>
+</div>
+<div class="flex bg-surface-container-high p-1 rounded-full">
+<button class="px-4 py-1.5 rounded-full text-xs font-medium bg-primary text-on-primary">7D</button>
+<button class="px-4 py-1.5 rounded-full text-xs font-medium text-white/50">30D</button>
+</div>
+</div>
+<!-- Simplified Visualization Container -->
+<div class="h-64 flex items-end gap-2 px-2 relative">
+<!-- Background Grid -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="border-b border-white/5 w-full h-px"></div>
+<div class="border-b border-white/5 w-full h-px"></div>
+<div class="border-b border-white/5 w-full h-px"></div>
+<div class="border-b border-white/5 w-full h-px"></div>
+</div>
+<!-- Bar Charts with Tonal Layers -->
+<div class="flex-1 bg-surface-container-highest/30 h-[40%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[60%] rounded-t-lg"></div>
+</div>
+<div class="flex-1 bg-surface-container-highest/30 h-[65%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[75%] rounded-t-lg"></div>
+</div>
+<div class="flex-1 bg-surface-container-highest/30 h-[50%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[40%] rounded-t-lg"></div>
+</div>
+<div class="flex-1 bg-surface-container-highest/30 h-[85%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[90%] rounded-t-lg"></div>
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] px-2 py-1 rounded font-bold whitespace-nowrap">PEAK OPTIMISM</div>
+</div>
+<div class="flex-1 bg-surface-container-highest/30 h-[60%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[65%] rounded-t-lg"></div>
+</div>
+<div class="flex-1 bg-surface-container-highest/30 h-[70%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[80%] rounded-t-lg"></div>
+</div>
+<div class="flex-1 bg-surface-container-highest/30 h-[55%] rounded-t-lg relative group transition-all hover:bg-primary/20">
+<div class="absolute bottom-0 w-full bg-primary/40 h-[50%] rounded-t-lg"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] text-white/30 uppercase tracking-[0.2em] font-medium">
+<span>Mon</span>
+<span>Tue</span>
+<span>Wed</span>
+<span>Thu</span>
+<span>Fri</span>
+<span>Sat</span>
+<span>Sun</span>
+</div>
+</div>
+<!-- Active Stakes Grid -->
+<div>
+<div class="flex justify-between items-center mb-6">
+<h2 class="text-xl font-headline font-bold text-white">Active Stakes</h2>
+<button class="text-primary text-xs uppercase tracking-widest font-headline font-bold">Manage All</button>
+</div>
+<div class="space-y-4">
+<!-- Card 1 -->
+<div class="p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-16 rounded-lg bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="dramatic cinematic movie poster aesthetic with deep shadows and moody blue and red lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClc9YG7fBmS6dp0offWpft4do9xCirbxeWF3ba56lMlKBLvwmYrR1mtoHtW-YYaqWqb_-ilOH7u59aI-Hw3HaEohk5yQQRGhLEonJ8FU0h8lYvm7EqNd1EWdjJt8OxxefIFgLgKIOZdozGe3lQS27mY7IpdzrdpCZq29FHPzdVhfomLM9-ACq7KpftVxN3uegI-uglbXiUWLvDzhb7NncMXRWgJoDgSWxndQwMHqWKRqwtDnLkc9K1pctse5WiTSPf1jkAq0Mf9Ok"/>
+</div>
+<div>
+<span class="bg-secondary-container/10 text-secondary text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-tighter">High Stakes</span>
+<h3 class="font-headline font-bold text-lg text-white mt-1">Oscars 2024: Best Picture</h3>
+<p class="text-xs text-on-surface-variant italic">Position: Oppenheimer (YES)</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs uppercase text-white/40 tracking-widest mb-1">Current Value</p>
+<p class="text-xl font-headline font-bold text-white">$4,240.50</p>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4 pt-4 border-t border-white/5">
+<div>
+<p class="text-[10px] text-white/40 uppercase mb-1">Avg Buy</p>
+<p class="text-sm font-medium">$0.64</p>
+</div>
+<div>
+<p class="text-[10px] text-white/40 uppercase mb-1">Current Price</p>
+<p class="text-sm font-medium">$0.88</p>
+</div>
+<div>
+<p class="text-[10px] text-white/40 uppercase mb-1">Return</p>
+<p class="text-sm font-medium text-primary">+$1,580 (37.5%)</p>
+</div>
+<div class="flex justify-end items-center">
+<button class="bg-surface-container-highest hover:bg-white/10 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all">Sell Stake</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-6 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors group">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-16 rounded-lg bg-surface-container-highest overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="black and white gritty film photography of a projector lens with light dust particles floating in the beam" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsydBiXoI_Cru_7NlcVERZxtg_W4qrI8KSJIQ2E3ZGG-xXyEENj2yh5fP2NpR8OxKM4lVGj_CInHTwxv2HESrbC6C69e0tID5uHKpt-HHab5jndGxNtPQVgb4gZd-evDsMr0Kqz5L_eOf7jGgzLhuHrW3jBU_JZD8XMVgwxuR31A9TYFnqomTnvIDFHjTjyeFvGoYTjyeaQXYaMr2v089nx7FiBpi3cWPoKAmwfLSSiIuGvAAiJUBpZD2QCZKYpTzn8eS--E7N0FI"/>
+</div>
+<div>
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-0.5 rounded font-bold uppercase tracking-tighter">Box Office</span>
+<h3 class="font-headline font-bold text-lg text-white mt-1">'Dune: Part Two' Opening Weekend</h3>
+<p class="text-xs text-on-surface-variant italic">Position: &gt;$100M (YES)</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs uppercase text-white/40 tracking-widest mb-1">Current Value</p>
+<p class="text-xl font-headline font-bold text-white">$1,890.00</p>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4 pt-4 border-t border-white/5">
+<div>
+<p class="text-[10px] text-white/40 uppercase mb-1">Avg Buy</p>
+<p class="text-sm font-medium">$0.42</p>
+</div>
+<div>
+<p class="text-[10px] text-white/40 uppercase mb-1">Current Price</p>
+<p class="text-sm font-medium">$0.44</p>
+</div>
+<div>
+<p class="text-[10px] text-white/40 uppercase mb-1">Return</p>
+<p class="text-sm font-medium text-white/60">+$85.20 (4.8%)</p>
+</div>
+<div class="flex justify-end items-center">
+<button class="bg-surface-container-highest hover:bg-white/10 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all">Sell Stake</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Information Column -->
+<div class="col-span-12 lg:col-span-5 space-y-8">
+<!-- High Potential Markets (Featured Mini-List) -->
+<div class="p-8 rounded-xl bg-surface-container-low border-t border-white/5">
+<h2 class="text-xl font-headline font-bold text-white mb-6">Premiere Alerts</h2>
+<div class="space-y-6">
+<div class="flex gap-4">
+<div class="w-20 h-24 rounded-lg bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="noir city street at night with wet pavement and neon signs reflecting in puddles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcsbq39ev90ZSAcbz9fOunajRi1gzupeO0vka9ou8d84mWwp8FpoqDs3id2WXvvIJtkr3pnJuADZAjAAuJ1qXQnrbP30cnutYZDBGA0HbOngYBaXieIfVHU8EA3sJKQILdcBq6cYB-zo3jnrcv9UqBHsFRxrVxC9Y7KI2oOpvlvv6sC-ELcCm14k46kJ8s1fEPY05Wd13JkSiuqH3EIuq5N0DU8F4lacvZXMAJe8or9ovXNEn31MoVfvy5hsyBsGpCedftEniWUOY"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] uppercase tracking-widest text-secondary font-bold">Expiring in 2h</span>
+<h4 class="font-headline font-medium text-white mt-1 leading-tight">Will Nolan win Best Director?</h4>
+<p class="text-xs text-on-surface-variant mt-2">Odds: 88% - Market closing soon.</p>
+<button class="mt-3 text-primary text-[10px] uppercase font-bold tracking-widest text-left">Trade Now →</button>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-20 h-24 rounded-lg bg-surface-container-highest flex-shrink-0 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="close up of a vintage 35mm movie camera reel with intricate metal gears and texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUGztJu-JFEwyjg4fj2k10tGYNrEjwtPu5G9VAsDdmmuKmkg-koZKh4Ta_gqVRMCGVAQGrYRrvFQuTb002FZl_lhdWXEyygNlThJQ9c-wc5C4KbEt8tZD8Fy4TZnRBHxa76afmYOQxdghuaNnVmYJ_1yMEzt8h0tHqxyYMpKyb0326U8lxds2pjDGMDnQURq-D2VPkMdIomspas3zbBiLS63SHK2osk4k9briRFQg4aEjkSQBu2YtClYM-6WSUF8faEBfrpowr0ss"/>
+</div>
+<div class="flex flex-col justify-center">
+<span class="text-[10px] uppercase tracking-widest text-primary font-bold">Trending</span>
+<h4 class="font-headline font-medium text-white mt-1 leading-tight">Cannes Film Festival: Palm d'Or Winner</h4>
+<p class="text-xs text-on-surface-variant mt-2">Expert sentiment shifting positive (+12%).</p>
+<button class="mt-3 text-primary text-[10px] uppercase font-bold tracking-widest text-left">View Analysis →</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Portfolio Allocation -->
+<div class="p-8 rounded-xl bg-surface-container-low border-t border-white/5">
+<h2 class="text-xl font-headline font-bold text-white mb-6">Genre Allocation</h2>
+<div class="space-y-4">
+<div class="space-y-2">
+<div class="flex justify-between text-xs uppercase tracking-widest">
+<span class="text-white/60">Drama</span>
+<span class="text-white font-bold">42%</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full">
+<div class="h-full bg-primary w-[42%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs uppercase tracking-widest">
+<span class="text-white/60">Sci-Fi</span>
+<span class="text-white font-bold">28%</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full">
+<div class="h-full bg-primary-container w-[28%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs uppercase tracking-widest">
+<span class="text-white/60">Documentary</span>
+<span class="text-white font-bold">15%</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full">
+<div class="h-full bg-tertiary-container w-[15%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-xs uppercase tracking-widest">
+<span class="text-white/60">Action</span>
+<span class="text-white font-bold">15%</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full">
+<div class="h-full bg-secondary-container w-[15%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Market History Ticker -->
+<div class="p-6 rounded-xl border border-white/5 bg-surface-container-lowest">
+<h3 class="text-xs font-headline font-bold uppercase tracking-[0.2em] text-white/40 mb-4">Market Logs</h3>
+<div class="space-y-4 text-[11px]">
+<div class="flex justify-between text-on-surface-variant">
+<span>Oppenheimer Best Pic YES</span>
+<span class="text-primary font-mono">+12.4%</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Poor Things Best Actress</span>
+<span class="text-white/40 font-mono">-2.1%</span>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span>Barbie Box Office $1.4B</span>
+<span class="text-primary font-mono">+45.8%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action for Mobile Navigation (Suppressed for Desktop as per rules) -->
+</body></html>

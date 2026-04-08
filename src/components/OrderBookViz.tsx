@@ -45,9 +45,9 @@ export default function OrderBookViz({ platform, marketId }: OrderBookVizProps) 
 
   if (loading) {
     return (
-      <div className="bg-card border border-border rounded-xl p-4">
+      <div className="bg-surface-container-low rounded-xl p-6 lg:p-8">
         <div className="h-4 skeleton rounded w-24 mb-4" />
-        <div className="h-[160px] skeleton rounded-lg" />
+        <div className="h-[140px] skeleton rounded-xl" />
       </div>
     );
   }
@@ -62,7 +62,7 @@ export default function OrderBookViz({ platform, marketId }: OrderBookVizProps) 
   const maxAsk = Math.max(...asks.map((a) => a.size), 1);
 
   return (
-    <div className="bg-card border border-border rounded-xl p-4">
+    <div className="bg-surface-container-low rounded-xl p-6 lg:p-8">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-semibold">Order Book</h3>
         <span className="text-[11px] text-text-muted">

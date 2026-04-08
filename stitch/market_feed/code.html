@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#3b0900",
+                    "on-surface": "#e2e2e2",
+                    "secondary-container": "#ff5625",
+                    "surface-container-highest": "#353535",
+                    "on-surface-variant": "#c0c7d5",
+                    "on-primary-fixed": "#001c39",
+                    "on-tertiary-container": "#31290f",
+                    "inverse-surface": "#e2e2e2",
+                    "tertiary-container": "#9c906d",
+                    "on-tertiary-fixed-variant": "#504629",
+                    "primary-fixed": "#d4e3ff",
+                    "secondary": "#ffb5a0",
+                    "surface-bright": "#393939",
+                    "outline": "#8a919e",
+                    "surface-tint": "#a4c9ff",
+                    "primary": "#a4c9ff",
+                    "primary-container": "#2793fb",
+                    "on-tertiary-fixed": "#221b03",
+                    "surface-variant": "#353535",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#303030",
+                    "primary-fixed-dim": "#a4c9ff",
+                    "on-background": "#e2e2e2",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#d4c6a0",
+                    "on-secondary-fixed-variant": "#872000",
+                    "outline-variant": "#404753",
+                    "surface-container-low": "#1b1b1b",
+                    "secondary-fixed": "#ffdbd1",
+                    "surface-dim": "#131313",
+                    "on-secondary": "#601400",
+                    "inverse-primary": "#005fac",
+                    "on-primary": "#00315d",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-container": "#1f1f1f",
+                    "surface-container-high": "#2a2a2a",
+                    "on-tertiary": "#383015",
+                    "on-primary-fixed-variant": "#004883",
+                    "surface": "#131313",
+                    "background": "#131313",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-container": "#002a51",
+                    "secondary-fixed-dim": "#ffb5a0",
+                    "tertiary": "#d4c6a0",
+                    "tertiary-fixed": "#f1e1ba",
+                    "on-secondary-container": "#541100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .noir-gradient {
+            background: linear-gradient(135deg, #a4c9ff 0%, #2793fb 100%);
+        }
+        .glass-panel {
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-[#131313]/60 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full shadow-[0_8px_32px_0_rgba(9,136,240,0.08)]">
+<div class="flex items-center gap-4">
+<button class="hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[#0988F0]">menu</span>
+</button>
+<h1 class="text-xl font-black text-[#0988F0] tracking-[-0.04em] font-['Space_Grotesk'] uppercase">THE CINEMATIC EXCHANGE</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant">search</button>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full object-cover border border-outline-variant/20" data-alt="Professional headshot of a film critic in low light with subtle blue rim lighting on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6tjIY2NMwFyeCX674DjUTjVyedflm_NN0jSSBD0B-TCMHAOTTXtW9SjU0zmykT9r-S1fKSsjBiYVrdgZQ-nEd6wx9G7V1r1wfT4nMN-SyXgMZa2XW0Jd25ZImZWz8orWyPB-zd1TDLzG5mNYylsd-Nlqr0K5ilY-V5QQELOg7vukxxaEeG2r0YxlAMKRrqKk6vxCjgLzX5GNLgU7upJgwdKwkuoTixNeZYNNzMrsAM9DHyZ4h7pU8KhokoEk2l0EoPLYbQU36a0M"/>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Hero Section / Featured Premiere -->
+<section class="mb-12 relative h-[450px] rounded-xl overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent z-10"></div>
+<img alt="Cinema landscape" class="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Epic wide shot of a futuristic desert landscape with a monolithic space ship hovering above sand dunes, cinematic atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6Lf3POpTk3nPbm4GGr2TL1SujlHqZw4tLOwYNNBVwANS0XTBJplWs-7TJ5TCTDir_70YSbw7NdcJ3CqV8GqLqNs7zmtU0qgMps5lB76vQ6uTWR28j7dp5MziQLDF93k45JPNEl8PwNT92E7sAU2uBBs7aV8mib84Xv5cazUcfOu_JApqRzFhJdsX4lneebnBsXm1Qo4EHqTL2u1HZ5FMwAaqR7AMXJs1yiyH4VfWJqil82vy_5MqSbI-mTJUk5yr8DI2JaxuiE-g"/>
+<div class="absolute bottom-0 left-0 p-8 z-20 w-full md:w-2/3">
+<div class="flex items-center gap-2 mb-4">
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-[0.1em] uppercase">FEATURED PREMIERE</span>
+<span class="text-primary text-[10px] font-bold tracking-[0.1em] uppercase">ENDS IN 14H 22M</span>
+</div>
+<h2 class="text-4xl md:text-6xl font-headline font-bold tracking-tighter mb-6 leading-tight">Will Joker: Folie à Deux exceed $150M domestic opening?</h2>
+<div class="flex flex-wrap gap-4">
+<button class="noir-gradient px-8 py-4 rounded-xl text-on-primary font-bold shadow-lg shadow-primary/20 flex items-center gap-2 active:scale-95 transition-transform">
+<span>PREDICT YES</span>
+<span class="text-sm opacity-80">68¢</span>
+</button>
+<button class="bg-surface-container-highest px-8 py-4 rounded-xl text-on-surface font-bold hover:bg-surface-container-high transition-colors active:scale-95">
+<span>PREDICT NO</span>
+<span class="text-sm opacity-60 ml-2">34¢</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Market Categories -->
+<div class="flex gap-4 mb-12 overflow-x-auto pb-4 no-scrollbar">
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label text-sm whitespace-nowrap">All Markets</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full font-label text-sm whitespace-nowrap hover:bg-surface-container-high transition-colors">Box Office</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full font-label text-sm whitespace-nowrap hover:bg-surface-container-high transition-colors">Awards (97th Oscars)</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full font-label text-sm whitespace-nowrap hover:bg-surface-container-high transition-colors">Casting News</button>
+<button class="bg-surface-container-low text-on-surface-variant px-6 py-2 rounded-full font-label text-sm whitespace-nowrap hover:bg-surface-container-high transition-colors">Rotten Tomatoes</button>
+</div>
+<!-- Prediction Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-transform duration-300">
+<div class="relative h-48">
+<img alt="Movie Poster" class="w-full h-full object-cover" data-alt="Moody black and white close up of a film reel with soft cinematic lighting and dust particles in the air" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiyonXoHGkjDj9rhNUorTzNUixE7nGiwGnQlqPDxJ5hahPfHlthqLF3ZVmsoU-Dgpf81QYrxREhd9e0jnlfbPUZ_1XE1Tnr5TpeVfu0nyYSbJsajDVVeGq4yymn-lBlsaKBy2o0x04PfHhUiIU2xI6Knkdrs4WUbPqFhyjvkbtrQxxvXE8raiANPrBsjbQia9RKpQzbhd7BThDYDzghMSpewfRFYAUCye8wQZgVH5i0z7JBOw0nX-dHPLTOraVFlT6YlX0nXUbqnw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 right-4 bg-surface/80 backdrop-blur-md px-3 py-1 rounded-lg">
+<span class="text-secondary text-xs font-bold font-label tracking-wider uppercase">VOL $2.4M</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold mb-8 leading-snug h-14 overflow-hidden">Will Dune: Part Two gross over $750M worldwide by end of run?</h3>
+<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">CURRENT YES</span>
+<span class="text-2xl font-headline font-bold text-primary">72¢</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">REMAINING</span>
+<span class="text-sm font-label font-medium">12 DAYS</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high py-3 rounded-lg text-primary font-bold text-sm hover:bg-primary hover:text-on-primary transition-all">YES</button>
+<button class="bg-surface-container-high py-3 rounded-lg text-secondary font-bold text-sm hover:bg-secondary hover:text-on-secondary transition-all">NO</button>
+</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-transform duration-300">
+<div class="relative h-48">
+<img alt="Awards" class="w-full h-full object-cover" data-alt="A golden award statuette spotlighted against a dark velvet background with subtle bokeh light effects" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClLQkpizRJ_HKm73vBV10ROHafBtLfB8WU7Xiq0nOSB2dH6inndbYNcDuWk2-r10h3gGExx51YsLH6Gs5suOWVX8qLgxeUrJtQOeuOh5LOY50H23Sb_VH5ojXjXb09it3OaQ-gtHPLQZWfyCUmytF9hOMKw5r3zS6yK2iaxEuvC9NvpU5ezd9KOethAtrysfiQqZM0nZq8x-vlSIBQD7UQa_OdpGg1Y-JgNu_SwLi91X3l7bflYr4wDcYd2TFgqfnKxSXYpujwaO8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 right-4 bg-surface/80 backdrop-blur-md px-3 py-1 rounded-lg">
+<span class="text-tertiary text-xs font-bold font-label tracking-wider uppercase">VERIFIED</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold mb-8 leading-snug h-14 overflow-hidden">Will 'Oppenheimer' win Best Picture at the 97th Academy Awards?</h3>
+<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">CURRENT YES</span>
+<span class="text-2xl font-headline font-bold text-primary">89¢</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">REMAINING</span>
+<span class="text-sm font-label font-medium">4 MONTHS</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high py-3 rounded-lg text-primary font-bold text-sm hover:bg-primary hover:text-on-primary transition-all">YES</button>
+<button class="bg-surface-container-high py-3 rounded-lg text-secondary font-bold text-sm hover:bg-secondary hover:text-on-secondary transition-all">NO</button>
+</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-transform duration-300">
+<div class="relative h-48">
+<img alt="Casting" class="w-full h-full object-cover" data-alt="A brightly lit director's chair with a megaphone on a dark film set stage, dramatic contrast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWqa2AnT5_u-D_RbFeunB4xBHK7m50wx0Wx0i0BsauS-f8Nu-Q0tv0-spqZVMzGg2h0PtlPVPBcWsZuYnIVu-_MfbtMtuZouNEUWttg1Z24DKb7RJyv37aDwK0lK9cX8LjQ78vH7hM_v7CfRO8y0qtatoLjS4ldzCYnmeSxoqZmEWPnl_-KVUFj551W0d3ybjgQiq1RavUUj729-1auVVljuVuqaVknEen--gss-CVNPALfUfhwuVuntp9IcUlT8oSwhBCm0VwV10"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute top-4 right-4 bg-surface/80 backdrop-blur-md px-3 py-1 rounded-lg">
+<span class="text-secondary-container text-xs font-bold font-label tracking-wider uppercase">HOT</span>
+</div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold mb-8 leading-snug h-14 overflow-hidden">Will Aaron Taylor-Johnson be officially cast as James Bond by 2025?</h3>
+<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">CURRENT YES</span>
+<span class="text-2xl font-headline font-bold text-primary">45¢</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">REMAINING</span>
+<span class="text-sm font-label font-medium">21 DAYS</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high py-3 rounded-lg text-primary font-bold text-sm hover:bg-primary hover:text-on-primary transition-all">YES</button>
+<button class="bg-surface-container-high py-3 rounded-lg text-secondary font-bold text-sm hover:bg-secondary hover:text-on-secondary transition-all">NO</button>
+</div>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-transform duration-300">
+<div class="relative h-48">
+<img alt="Streaming" class="w-full h-full object-cover" data-alt="Modern home theater setup with a large screen displaying a colorful abstract nebula in a dark room" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiiwgtQX1rl9MWgtpf4urhf1ynCN15DpQZ9UhWWzg3CcMxnuG1SrJJUPv4Q0AEDdcFffqDmvS6bt2XrFVt9gb6wiIfY5MumSGHBTUQZ99km-hry0ozTgA_JlsSm8k_8y4AUcWtvDgPsZJdIo965sgXXy0BW40NoGGi4IPK1P0ajJbQXqQ2MkVhBenVK4aetKNiF2kdPP6OJCUM0oe1rBGbSfYv51hiMc3L0Tm1WyO9BY8AEN5grHxERsp00NvW4eD3f9yEUa2W-AA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+</div>
+<div class="p-6">
+<h3 class="text-xl font-headline font-bold mb-8 leading-snug h-14 overflow-hidden">Will Netflix release more than 5 original films in Q4?</h3>
+<div class="flex items-center justify-between mb-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">CURRENT YES</span>
+<span class="text-2xl font-headline font-bold text-primary">52¢</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1">REMAINING</span>
+<span class="text-sm font-label font-medium">18 DAYS</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="bg-surface-container-high py-3 rounded-lg text-primary font-bold text-sm hover:bg-primary hover:text-on-primary transition-all">YES</button>
+<button class="bg-surface-container-high py-3 rounded-lg text-secondary font-bold text-sm hover:bg-secondary hover:text-on-secondary transition-all">NO</button>
+</div>
+</div>
+</div>
+<!-- Card 5 -->
+<div class="bg-surface-container-low rounded-xl overflow-hidden hover:translate-y-[-4px] transition-transform duration-300 lg:col-span-2">
+<div class="flex flex-col md:flex-row h-full">
+<div class="relative w-full md:w-1/2 h-64 md:h-auto">
+<img alt="Rotten Tomatoes" class="w-full h-full object-cover" data-alt="A close up of a vintage film projector lens glowing in a dark room with dust motes caught in the beam of light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkSMMW__F5Y0XeC6kQQHp72dBs8w_8nvWGvQ5xumgzzRq7dsHL3UadQw3Uxcp6_-XyPpjZ8TVvDTvr_HFVaDt_kSlOr12DfaGa_2GqE8jjXKR3Y78ljpR0Xz4nO4yrg00mj7ixdhFZXilRbKwli6pzyJ2XSvDLfd29eh5Ipmbn0GbiUJgm5wc4Z7ielQvoJW7_suUN1TknGj6OGYzQKZLM4KS6fMXKWyYCi5f3kGVL4NiumVj8eDWdB5-7Fx2fX8pn6nmtGloVQNo"/>
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-surface-container-low hidden md:block"></div>
+</div>
+<div class="p-8 flex-1 flex flex-col justify-between">
+<div>
+<span class="text-[10px] text-secondary font-bold tracking-[0.2em] uppercase mb-4 block">EXPERT OPINION</span>
+<h3 class="text-3xl font-headline font-bold mb-4 leading-tight">Will 'Deadpool &amp; Wolverine' maintain a 90%+ Rotten Tomatoes score after week 3?</h3>
+<p class="text-on-surface-variant text-sm mb-6 line-clamp-2 italic">"Current critical momentum suggests a strong hold, but audience splits in week 2 could influence late-breaking verified reviews." — Chief Curator</p>
+</div>
+<div>
+<div class="flex items-center gap-8 mb-6">
+<div>
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1 block">YES PRICE</span>
+<span class="text-3xl font-headline font-bold text-primary">78¢</span>
+</div>
+<div>
+<span class="text-[10px] text-on-surface-variant font-bold tracking-[0.1em] uppercase mb-1 block">CONFIDENCE</span>
+<span class="text-3xl font-headline font-bold text-on-surface">HIGH</span>
+</div>
+</div>
+<button class="w-full noir-gradient py-4 rounded-xl text-on-primary font-bold shadow-lg shadow-primary/20 active:scale-95 transition-transform">PLACE PREDICTION</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface/60 dark:bg-[#131313]/60 backdrop-blur-2xl flex justify-around items-center h-20 px-4 pb-4">
+<a class="flex flex-col items-center justify-center text-[#0988F0] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#0988F0] after:rounded-full" href="#">
+<span class="material-symbols-outlined mb-1">movie_filter</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium">Markets</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 hover:text-[#0988F0] transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">insert_chart</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium">Detail</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 hover:text-[#0988F0] transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">account_balance_wallet</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium">Portfolio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 hover:text-[#0988F0] transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1">leaderboard</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium">Rankings</span>
+</a>
+</nav>
+</body></html>

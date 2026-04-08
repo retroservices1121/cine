@@ -60,22 +60,22 @@ export default function PriceChart({ platform, marketId }: PriceChartProps) {
   }, [fetchHistory]);
 
   const trendUp = data.length >= 2 && data[data.length - 1].price >= data[0].price;
-  const color = trendUp ? "#22c55e" : "#ef4444";
+  const color = trendUp ? "#2793fb" : "#ff5625";
 
   return (
-    <div className="bg-card border border-border rounded-xl p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold">Price History</h3>
-        <div className="flex gap-0.5 bg-bg rounded-md p-0.5">
+    <div className="bg-surface-container-low rounded-xl p-6 lg:p-8">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-white/60 font-label text-xs uppercase tracking-[0.15em]">Price History</h3>
+        <div className="flex bg-surface-container-highest rounded-full p-1">
           {INTERVALS.map((iv, i) => (
             <button
               key={iv.label}
               onClick={() => setActiveInterval(i)}
               className={cn(
-                "px-2 py-1 text-[11px] font-medium rounded transition-colors",
+                "px-3 py-1.5 text-xs font-bold rounded-full transition-all",
                 i === activeInterval
-                  ? "bg-card text-text"
-                  : "text-text-muted hover:text-text"
+                  ? "bg-primary text-on-primary"
+                  : "text-white/40 hover:text-white"
               )}
             >
               {iv.label}
@@ -101,14 +101,14 @@ export default function PriceChart({ platform, marketId }: PriceChartProps) {
             </defs>
             <XAxis
               dataKey="time"
-              tick={{ fill: "#71717a", fontSize: 10 }}
+              tick={{ fill: "#8a919e", fontSize: 10 }}
               axisLine={false}
               tickLine={false}
               interval="preserveStartEnd"
             />
             <YAxis
               domain={[0, 100]}
-              tick={{ fill: "#71717a", fontSize: 10 }}
+              tick={{ fill: "#8a919e", fontSize: 10 }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v: number) => `${v}%`}
@@ -116,12 +116,13 @@ export default function PriceChart({ platform, marketId }: PriceChartProps) {
             />
             <Tooltip
               contentStyle={{
-                background: "#16161a",
-                border: "1px solid #27272a",
-                borderRadius: 8,
+                background: "#1f1f1f",
+                border: "none",
+                borderRadius: 12,
                 fontSize: 12,
+                boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
               }}
-              labelStyle={{ color: "#a1a1aa" }}
+              labelStyle={{ color: "#c0c7d5" }}
               formatter={(value) => [`${value}%`, "Yes"]}
             />
             <Area

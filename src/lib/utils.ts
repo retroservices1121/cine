@@ -10,15 +10,15 @@ export function formatPct(n: number): string {
 }
 
 export function priceColor(price: number): string {
-  if (price > 0.7) return "text-green";
-  if (price < 0.3) return "text-red";
-  return "text-text-secondary";
+  if (price > 0.7) return "text-primary";
+  if (price < 0.3) return "text-secondary";
+  return "text-on-surface-variant";
 }
 
 export function pnlColor(n: number): string {
-  if (n > 0) return "text-green";
-  if (n < 0) return "text-red";
-  return "text-text-secondary";
+  if (n > 0) return "text-primary-container";
+  if (n < 0) return "text-secondary";
+  return "text-on-surface-variant";
 }
 
 export function pnlSign(n: number): string {

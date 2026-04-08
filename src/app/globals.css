@@ -1,70 +1,90 @@
 @import "tailwindcss";
-
-:root {
-  --bg: #09090b;
-  --bg-secondary: #111114;
-  --card: #16161a;
-  --card-hover: #1c1c22;
-  --border: #27272a;
-  --border-hover: #3f3f46;
-  --text: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
-  --accent: #8b5cf6;
-  --accent-hover: #a78bfa;
-  --green: #22c55e;
-  --green-dim: rgba(34,197,94,0.1);
-  --red: #ef4444;
-  --red-dim: rgba(239,68,68,0.1);
-  --amber: #f59e0b;
-  --amber-dim: rgba(245,158,11,0.1);
-}
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap');
 
 @theme inline {
-  --color-bg: var(--bg);
-  --color-bg-secondary: var(--bg-secondary);
-  --color-card: var(--card);
-  --color-card-hover: var(--card-hover);
-  --color-border: var(--border);
-  --color-border-hover: var(--border-hover);
-  --color-text: var(--text);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted: var(--text-muted);
-  --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-green: var(--green);
-  --color-green-dim: var(--green-dim);
-  --color-red: var(--red);
-  --color-red-dim: var(--red-dim);
-  --color-amber: var(--amber);
-  --color-amber-dim: var(--amber-dim);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: #131313;
+  --color-surface-dim: #131313;
+  --color-surface-container-lowest: #0e0e0e;
+  --color-surface-container-low: #1b1b1b;
+  --color-surface-container: #1f1f1f;
+  --color-surface-container-high: #2a2a2a;
+  --color-surface-container-highest: #353535;
+  --color-surface-bright: #393939;
+  --color-surface-variant: #353535;
+  --color-on-surface: #e2e2e2;
+  --color-on-surface-variant: #c0c7d5;
+  --color-primary: #a4c9ff;
+  --color-primary-container: #2793fb;
+  --color-on-primary: #00315d;
+  --color-secondary: #ffb5a0;
+  --color-secondary-container: #ff5625;
+  --color-on-secondary: #601400;
+  --color-on-secondary-container: #541100;
+  --color-tertiary: #d4c6a0;
+  --color-tertiary-container: #9c906d;
+  --color-outline: #8a919e;
+  --color-outline-variant: #404753;
+  --color-error: #ffb4ab;
+  --font-headline: 'Space Grotesk', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-label: 'Inter', system-ui, sans-serif;
 }
 
 * { box-sizing: border-box; }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-sans), system-ui, sans-serif;
+  background: #131313;
+  color: #e2e2e2;
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
+
+::selection { background: rgba(164, 201, 255, 0.3); }
 
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #353535; }
+
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+/* Cinematic Noir utilities */
+.noir-gradient {
+  background: linear-gradient(135deg, #a4c9ff 0%, #2793fb 100%);
+}
+
+.glass-panel {
+  background: rgba(19, 19, 19, 0.6);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(164, 201, 255, 0.4);
+}
+
+.ambient-shadow {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.top-light {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
 
 .fade-in {
-  animation: fadeIn 0.25s ease-out;
+  animation: fadeIn 0.3s ease-out;
 }
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .skeleton {
-  background: linear-gradient(90deg, var(--card) 25%, var(--card-hover) 50%, var(--card) 75%);
+  background: linear-gradient(90deg, #1b1b1b 25%, #2a2a2a 50%, #1b1b1b 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
@@ -73,16 +93,16 @@ body {
   100% { background-position: -200% 0; }
 }
 
-/* Override recharts tooltip */
+/* Recharts overrides */
 .recharts-tooltip-wrapper .recharts-default-tooltip {
-  background: var(--card) !important;
-  border: 1px solid var(--border) !important;
-  border-radius: 8px !important;
+  background: #1f1f1f !important;
+  border: none !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5) !important;
 }
 
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+  -webkit-appearance: none; margin: 0;
 }
 input[type="number"] { -moz-appearance: textfield; }

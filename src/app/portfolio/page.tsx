@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import Link from "next/link";
 import { formatUsd, pnlSign, pnlColor, cn, relativeTime } from "@/lib/utils";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+// Recharts available for future charts
 
 interface Position {
   id: string;
@@ -96,10 +96,10 @@ export default function PortfolioPage() {
 
   if (!authenticated) {
     return (
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-20 text-center fade-in">
-        <h1 className="text-2xl font-bold mb-3">Portfolio</h1>
-        <p className="text-text-muted mb-6">Connect your wallet to view positions and PNL</p>
-        <button onClick={login} className="px-6 py-2.5 bg-accent hover:bg-accent-hover text-white text-sm font-medium rounded-lg transition-colors">
+      <div className="px-6 lg:px-12 py-20 max-w-7xl mx-auto text-center fade-in">
+        <h1 className="text-3xl font-headline font-bold text-white tracking-tight mb-3">My Portfolio</h1>
+        <p className="text-white/40 mb-6">Connect your wallet to view positions and PNL</p>
+        <button onClick={login} className="noir-gradient text-on-primary px-8 py-3 rounded-xl font-headline font-bold text-sm uppercase tracking-wider active:scale-95 transition-all">
           Connect Wallet
         </button>
       </div>
@@ -113,27 +113,27 @@ export default function PortfolioPage() {
   const PIE_COLORS = ["#8b5cf6", "#22c55e", "#ef4444", "#f59e0b", "#3b82f6"];
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 sm:px-6 py-8 fade-in">
-      <h1 className="text-2xl font-bold mb-6">Portfolio</h1>
+    <div className="px-6 lg:px-12 py-8 lg:py-12 max-w-7xl mx-auto fade-in">
+      <h1 className="text-3xl font-headline font-bold text-white tracking-tight mb-8">My Portfolio</h1>
 
       {/* Stats bar */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
         {pnl && (
           <>
-            <div className="bg-card border border-border rounded-xl p-4">
-              <div className="text-[10px] text-text-muted mb-1">Total PNL</div>
+            <div className="bg-surface-container-low rounded-xl p-5">
+              <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Total PNL</div>
               <div className={cn("text-xl font-bold", pnlColor(pnl.total_pnl))}>
                 {pnlSign(pnl.total_pnl)}
               </div>
             </div>
-            <div className="bg-card border border-border rounded-xl p-4">
-              <div className="text-[10px] text-text-muted mb-1">Realized</div>
+            <div className="bg-surface-container-low rounded-xl p-5">
+              <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Realized</div>
               <div className={cn("text-lg font-bold", pnlColor(pnl.total_realized))}>
                 {pnlSign(pnl.total_realized)}
               </div>
             </div>
-            <div className="bg-card border border-border rounded-xl p-4">
-              <div className="text-[10px] text-text-muted mb-1">Unrealized</div>
+            <div className="bg-surface-container-low rounded-xl p-5">
+              <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Unrealized</div>
               <div className={cn("text-lg font-bold", pnlColor(pnl.total_unrealized))}>
                 {pnlSign(pnl.total_unrealized)}
               </div>
@@ -142,12 +142,12 @@ export default function PortfolioPage() {
         )}
         {usage && (
           <>
-            <div className="bg-card border border-border rounded-xl p-4">
-              <div className="text-[10px] text-text-muted mb-1">Total Trades</div>
+            <div className="bg-surface-container-low rounded-xl p-5">
+              <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Total Trades</div>
               <div className="text-lg font-bold">{usage.total_trades}</div>
             </div>
-            <div className="bg-card border border-border rounded-xl p-4">
-              <div className="text-[10px] text-text-muted mb-1">Volume</div>
+            <div className="bg-surface-container-low rounded-xl p-5">
+              <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Volume</div>
               <div className="text-lg font-bold">{formatUsd(usage.total_volume)}</div>
             </div>
           </>
@@ -166,7 +166,7 @@ export default function PortfolioPage() {
             onClick={() => setTab(t.key)}
             className={cn(
               "px-4 py-2 text-xs font-medium rounded-md transition-colors",
-              tab === t.key ? "bg-accent/10 text-accent" : "text-text-muted hover:text-text"
+              tab === t.key ? "bg-primary text-on-primary" : "text-white/40 hover:text-white"
             )}
           >
             {t.label}
@@ -186,7 +186,7 @@ export default function PortfolioPage() {
           {tab === "positions" && (
             <div className="space-y-3">
               {openPositions.length === 0 ? (
-                <div className="text-center py-12 bg-card border border-border rounded-xl">
+                <div className="text-center py-12 bg-surface-container-low rounded-xl">
                   <p className="text-text-muted mb-2">No open positions</p>
                   <Link href="/explore" className="text-accent text-sm hover:underline">
                     Browse markets
@@ -199,7 +199,7 @@ export default function PortfolioPage() {
                     <Link
                       key={pos.id}
                       href={`/market/${pos.platform}/${encodeURIComponent(pos.market_id)}`}
-                      className="block bg-card border border-border rounded-xl p-4 hover:bg-card-hover transition-colors"
+                      className="block bg-surface-container-low rounded-xl p-5 hover:bg-surface-container-high transition-colors"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
@@ -228,11 +228,11 @@ export default function PortfolioPage() {
           {tab === "orders" && (
             <div className="space-y-3">
               {activeOrders.length === 0 ? (
-                <div className="text-center py-12 bg-card border border-border rounded-xl">
+                <div className="text-center py-12 bg-surface-container-low rounded-xl">
                   <p className="text-text-muted">No active orders</p>
                 </div>
               ) : (
-                <div className="bg-card border border-border rounded-xl overflow-hidden">
+                <div className="bg-surface-container-low rounded-xl overflow-hidden">
                   <div className="hidden sm:grid grid-cols-8 gap-3 px-4 py-2.5 bg-bg-secondary text-[10px] text-text-muted uppercase tracking-wider font-medium">
                     <div className="col-span-2">Market</div>
                     <div>Type</div>
@@ -272,14 +272,14 @@ export default function PortfolioPage() {
           {tab === "history" && (
             <div className="space-y-3">
               {closedPositions.length === 0 ? (
-                <div className="text-center py-12 bg-card border border-border rounded-xl">
+                <div className="text-center py-12 bg-surface-container-low rounded-xl">
                   <p className="text-text-muted">No closed positions</p>
                 </div>
               ) : (
                 closedPositions.map((pos) => {
                   const positionPnl = (pos.current_price - pos.avg_entry_price) * pos.token_amount;
                   return (
-                    <div key={pos.id} className="bg-card border border-border rounded-xl p-4 opacity-80">
+                    <div key={pos.id} className="bg-surface-container-low rounded-xl p-5 opacity-80">
                       <div className="flex items-center justify-between">
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium truncate">{pos.market_title || pos.market_id}</p>

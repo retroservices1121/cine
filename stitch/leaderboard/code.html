@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Cinematic Exchange | Leaderboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#3b0900",
+                    "on-surface": "#e2e2e2",
+                    "secondary-container": "#ff5625",
+                    "surface-container-highest": "#353535",
+                    "on-surface-variant": "#c0c7d5",
+                    "on-primary-fixed": "#001c39",
+                    "on-tertiary-container": "#31290f",
+                    "inverse-surface": "#e2e2e2",
+                    "tertiary-container": "#9c906d",
+                    "on-tertiary-fixed-variant": "#504629",
+                    "primary-fixed": "#d4e3ff",
+                    "secondary": "#ffb5a0",
+                    "surface-bright": "#393939",
+                    "outline": "#8a919e",
+                    "surface-tint": "#a4c9ff",
+                    "primary": "#a4c9ff",
+                    "primary-container": "#2793fb",
+                    "on-tertiary-fixed": "#221b03",
+                    "surface-variant": "#353535",
+                    "on-error": "#690005",
+                    "inverse-on-surface": "#303030",
+                    "primary-fixed-dim": "#a4c9ff",
+                    "on-background": "#e2e2e2",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#d4c6a0",
+                    "on-secondary-fixed-variant": "#872000",
+                    "outline-variant": "#404753",
+                    "surface-container-low": "#1b1b1b",
+                    "secondary-fixed": "#ffdbd1",
+                    "surface-dim": "#131313",
+                    "on-secondary": "#601400",
+                    "inverse-primary": "#005fac",
+                    "on-primary": "#00315d",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-container": "#1f1f1f",
+                    "surface-container-high": "#2a2a2a",
+                    "on-tertiary": "#383015",
+                    "on-primary-fixed-variant": "#004883",
+                    "surface": "#131313",
+                    "background": "#131313",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-container": "#002a51",
+                    "secondary-fixed-dim": "#ffb5a0",
+                    "tertiary": "#d4c6a0",
+                    "tertiary-fixed": "#f1e1ba",
+                    "on-secondary-container": "#541100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .noir-gradient {
+            background: linear-gradient(135deg, #a4c9ff 0%, #2793fb 100%);
+        }
+        .glass-panel {
+            backdrop-filter: blur(24px);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131313;
+            color: #e2e2e2;
+        }
+        h1, h2, h3, .headline {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-[#131313]/60 backdrop-blur-xl flex justify-between items-center px-6 h-16 w-full shadow-[0_8px_32px_0_rgba(9,136,240,0.08)]">
+<div class="flex items-center gap-4">
+<button class="text-on-surface hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="text-xl font-black text-[#0988F0] tracking-[-0.04em] font-['Space_Grotesk'] uppercase">THE CINEMATIC EXCHANGE</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 items-center mr-6">
+<a class="text-on-surface-variant hover:text-[#0988F0] transition-colors font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium" href="#">Markets</a>
+<a class="text-on-surface-variant hover:text-[#0988F0] transition-colors font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium" href="#">Portfolio</a>
+<a class="text-[#0988F0] font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium relative after:content-[''] after:absolute after:-bottom-2 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-[#0988F0] after:rounded-full" href="#">Rankings</a>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container-highest ring-1 ring-outline-variant/30">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="portrait of a professional creative man with confident expression in a dimly lit studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgIs692s2BGH9J19R47BzCK1QNdRaOmuKU4EYGxP9rfaBd4GL-wOgYp4es_ITheV7tAECIANk4bngIlctofMYQsRtOhDkLLC02zpcwNkoouJh21enGgT-sJljxc9P6WPeicV9iI14CI6NL6qcIJW-On6EECV5lS2Q_JAy_Twjigs2eBLd_BMocS2WI03MFeAA_x_vxdgSDJnKE97qtzOmz43jt-2_puVts8g5phwfLZDjmbcuoE_NMg_b0XMG_0RzjmUZBYFYS7Y8"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-7xl mx-auto">
+<!-- Hero Header -->
+<section class="mb-12">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="text-secondary font-['Inter'] text-[10px] uppercase tracking-[0.2em] font-bold mb-2 block">The Elite Circle</span>
+<h1 class="text-5xl md:text-7xl font-bold tracking-tighter text-on-surface leading-none uppercase">THE TOP <span class="text-primary">CRITICS</span></h1>
+</div>
+<div class="flex flex-col gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors" data-icon="search">search</span>
+<input class="bg-surface-container-high border-none rounded-xl pl-12 pr-6 py-3 w-full md:w-64 text-sm font-['Inter'] tracking-wider focus:ring-1 focus:ring-primary/50 transition-all placeholder:text-on-surface-variant/50" placeholder="FIND A PREDICTOR" type="text"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Filters & Toggles -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+<div class="flex p-1 bg-surface-container-low rounded-full">
+<button class="px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all bg-primary text-on-primary">All-Time</button>
+<button class="px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all text-on-surface-variant hover:text-on-surface">Weekly</button>
+<button class="px-6 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all text-on-surface-variant hover:text-on-surface">Monthly</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mr-2">Category:</span>
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-high rounded-lg text-[10px] font-bold uppercase tracking-widest text-on-surface hover:bg-surface-container-highest transition-colors">Box Office</button>
+<button class="px-4 py-2 bg-surface-container-high rounded-lg text-[10px] font-bold uppercase tracking-widest text-on-surface hover:bg-surface-container-highest transition-colors">Awards</button>
+</div>
+</div>
+</div>
+<!-- Podium - Top 3 Critics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16 items-end">
+<!-- Rank 2 -->
+<div class="order-2 md:order-1 flex flex-col items-center group">
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full p-1 bg-outline-variant/30 group-hover:bg-primary/50 transition-colors">
+<img alt="Rank 2 Avatar" class="w-full h-full rounded-full object-cover" data-alt="portrait of a woman with sophisticated glasses in cinematic noir lighting with orange accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATJvWjaZVBERD5LLSYRgZQSjauPFMuqzp2ycl6DT-67eX104hkRkN67EGQVvh2Yn3brytSI2aDuODNyLcW709fWsdZTInwl38_u5ZcUqSmtnZnJ5r6HTvGZA7TmQJlGNo1nBFCsRmj9QhjLx_boKuQwzbU928OxKEcOCDW6XTt014AsRYZo3dO645exVHuOsj1gnzn6TT3ZdsTS5Lhcgo8QHsUtLIvI9KhJOqhqyKr1nzvMnLj4Am4-UKZKd7F5YQ3ClH8Wteugx0"/>
+</div>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-on-surface text-sm border border-outline-variant/20">2</div>
+</div>
+<div class="text-center">
+<h3 class="text-xl font-bold uppercase tracking-tight mb-1">Cinephile_99</h3>
+<p class="text-on-surface-variant text-xs uppercase tracking-widest mb-4">Silver Curator</p>
+<div class="bg-surface-container-low p-4 rounded-xl w-full border-t border-white/5">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[9px] text-on-surface-variant font-bold uppercase tracking-tighter">Earnings</span>
+<span class="text-sm font-bold text-primary">$12.4K</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[78%]"></div>
+</div>
+<div class="mt-2 text-right">
+<span class="text-[9px] text-on-surface-variant font-bold uppercase">Accuracy: 78%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Rank 1 -->
+<div class="order-1 md:order-2 flex flex-col items-center group mb-8 md:mb-0">
+<div class="relative mb-8 scale-110">
+<div class="w-32 h-32 rounded-full p-1 bg-primary group-hover:shadow-[0_0_30px_rgba(164,201,255,0.3)] transition-all">
+<img alt="Rank 1 Avatar" class="w-full h-full rounded-full object-cover" data-alt="dramatic low-key portrait of a man looking focused with high contrast shadows and cool blue rim light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyvlDPeHNegaA5UGAx_XNCrXWCZpqOz6ZuoDfefhNFnJcEUJITb1kRn2cswSAqX5l9rLHcXGi2Jco4EThYVInDL6LjlusgkZH7qSQv9g2l2T2YVFqgBxeuKiJcYXIh7GJX5KkWVkoQk_P1guxhphpBO9rHqWMGC_7BxR5m7lF6S5wig2_FdxqWzYPRE5SvhwGHzfaCS1W4Z7vd8jLB6lgzBbkq_DEB1_vyRFHn819rOahMlIWaxr2bzPQpS1sjayOEPc1vOPrY6oc"/>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full noir-gradient text-[10px] font-black uppercase tracking-[0.2em] text-white">CHAMPION</div>
+</div>
+<div class="text-center">
+<h3 class="text-3xl font-black uppercase tracking-tighter mb-1">Director_X</h3>
+<p class="text-secondary text-xs uppercase tracking-widest mb-6 font-bold">Top Predictor</p>
+<div class="bg-surface-container-high p-6 rounded-2xl w-full md:w-72 shadow-xl border-t border-white/10 relative">
+<div class="absolute -top-3 left-6">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="stars" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div class="flex justify-between items-center mb-4 pt-2">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Total Earned</span>
+<span class="text-2xl font-bold text-on-surface">$42.8K</span>
+</div>
+<div class="h-1.5 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full noir-gradient w-[94%]"></div>
+</div>
+<div class="mt-3 flex justify-between items-center">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase">Global Rank: #1</span>
+<span class="text-[10px] text-primary font-black uppercase">94% Accuracy</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="order-3 md:order-3 flex flex-col items-center group">
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full p-1 bg-outline-variant/30 group-hover:bg-tertiary/50 transition-colors">
+<img alt="Rank 3 Avatar" class="w-full h-full rounded-full object-cover" data-alt="portrait of an elegant woman with artistic lighting and subtle golden highlights in a dark environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzQ52M9Pb480Y9w3dS2BdgKQ3Oxv_LS6qwJOVH-jTf8UVn1yvEHuTDfPRPnFql1zAmAnCzbd31hzkUD22n_MW7o8pI10Vj-npsnuZW9qL_BN1HVEXRLDfZvJhtX6eb574Hbz7t0QJImwvPjPg4BUz2ZvuIjLJr2RSQvBZ_Oo-YV0DMwRZruinaaXmyA38vz-fsfMtxIp7WcujsRLJVldTMB2yYnteyQqX1coF3hOzf9aS_IFRvpasnQow1RGMRVPgqqp33-SxQFJI"/>
+</div>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-on-surface text-sm border border-outline-variant/20">3</div>
+</div>
+<div class="text-center">
+<h3 class="text-xl font-bold uppercase tracking-tight mb-1">The_Auteur</h3>
+<p class="text-on-surface-variant text-xs uppercase tracking-widest mb-4">Elite Expert</p>
+<div class="bg-surface-container-low p-4 rounded-xl w-full border-t border-white/5">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[9px] text-on-surface-variant font-bold uppercase tracking-tighter">Earnings</span>
+<span class="text-sm font-bold text-tertiary">$9.2K</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[71%]"></div>
+</div>
+<div class="mt-2 text-right">
+<span class="text-[9px] text-on-surface-variant font-bold uppercase">Accuracy: 71%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Ranking Table -->
+<section class="bg-surface-container-low rounded-3xl overflow-hidden shadow-2xl mb-12">
+<div class="px-8 py-6 flex justify-between items-center bg-surface-container-high/50 border-b border-white/5">
+<h2 class="text-sm font-bold uppercase tracking-[0.2em] text-on-surface-variant">Standard Ranking</h2>
+<button class="text-xs font-bold text-primary flex items-center gap-2 hover:opacity-70 transition-opacity">
+                    DOWNLOAD REPORT <span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] font-black text-on-surface-variant uppercase tracking-widest">
+<th class="px-8 py-6">Rank</th>
+<th class="px-8 py-6">Predictor</th>
+<th class="px-8 py-6">Status</th>
+<th class="px-8 py-6 text-right">Accuracy</th>
+<th class="px-8 py-6 text-right">Total Earnings</th>
+</tr>
+</thead>
+<tbody class="font-['Inter']">
+<!-- Table Row 1 -->
+<tr class="hover:bg-surface-container-high/30 border-t border-white/5 transition-colors group">
+<td class="px-8 py-5">
+<span class="text-sm font-bold">04</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-surface-container-highest">
+<img alt="Predictor 04" class="w-full h-full object-cover" data-alt="portrait of a man with serious expression and cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6e7ERbubAg-n-HU3Akafl4Al9kW_lpJJfPqiny1Lv2-VfbJ9fZz5vP6YCTuBpmaC6NONdnKv-1yoOcz8adnku4G6y_u8sb7v7X2WuWlxd5qdK-p9HXDwOewlxbQXzsx3PVCRGzzCVf7euXSV96tSs5X5cLiDTE3tH6sdvv-qxY7S5JoB3W8qsh-ytUjLlL19IdDCa_OsAhbNaCtLD3sWCfnFnzsxd-ZCUcKqSym8MkhorcYIvpXsYw0tRDPYFaCkzVjshOFsHuso"/>
+</div>
+<div>
+<span class="block text-sm font-bold tracking-tight">MovieMogul</span>
+<span class="text-[10px] text-on-surface-variant/60">Joined Dec 2023</span>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="px-2 py-1 rounded bg-secondary-container/10 text-secondary-container text-[9px] font-bold uppercase">Rising Star</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-medium">68.2%</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-bold text-on-surface tracking-tight">$7,430.00</span>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-surface-container-high/30 border-t border-white/5 transition-colors group">
+<td class="px-8 py-5">
+<span class="text-sm font-bold">05</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-surface-container-highest">
+<img alt="Predictor 05" class="w-full h-full object-cover" data-alt="portrait of a woman with vibrant features in high-fashion cinematic lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1InpRXxdvPhJ-ngSrPO8yU3t2ullFsIE-F1-0pfCePv_N2G4v_HfM8IKBsj-BhI6hWGFa6b3aYdEfBmwKvG93y9XROw9eiskRsR0evq_vYLvyrvyKjF_t3qVv41dzEq_sZOC8kcEkZQrtJD5QRNqSe19dPdR4AfVhWfH44BmfI1yqMu9HlxHzM6y7UYXYoi7l0PmRXIifQNvUinx9-bLrzKE2beIJEAc7KoRDayKVhFq0bQ-fBVwzoBJATX7r0rnT6j1JiBTnc18"/>
+</div>
+<div>
+<span class="block text-sm font-bold tracking-tight">NeonNight</span>
+<span class="text-[10px] text-on-surface-variant/60">Joined Jan 2024</span>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="px-2 py-1 rounded bg-tertiary-container/10 text-tertiary text-[9px] font-bold uppercase">Verified Critic</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-medium">65.8%</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-bold text-on-surface tracking-tight">$6,120.50</span>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="hover:bg-surface-container-high/30 border-t border-white/5 transition-colors group">
+<td class="px-8 py-5">
+<span class="text-sm font-bold">06</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-surface-container-highest">
+<img alt="Predictor 06" class="w-full h-full object-cover" data-alt="portrait of a young person with confident gaze in neon-infused dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIwm0IDJnMsSJBJNlyh4LR2tyNIzyFyUyZGM-bHV-D50qliSmaf3dPMXGxeEnTLlhR_XSFy1IzqMa4KdGZIZBW7ygw5WyljW0m5-eE9u6qTUjM-LCtNoINRo51_HK21D-5g9s79OrOXr_7VVywyZKQAPUmWEXsZfg2bgGeBkFv_mPZJgnUMcUfiDLilZBHeIMpzuQrDjJFPzmSO1shzCIH8BpPAeLFz5XdP8aXeBbPCINg6Rc9U6XlLgb72XAO244cW2vtcIACOxw"/>
+</div>
+<div>
+<span class="block text-sm font-bold tracking-tight">Scripthunter</span>
+<span class="text-[10px] text-on-surface-variant/60">Joined Oct 2023</span>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="px-2 py-1 rounded bg-primary-container/10 text-primary text-[9px] font-bold uppercase">Vanguard</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-medium">64.1%</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-bold text-on-surface tracking-tight">$5,890.00</span>
+</td>
+</tr>
+<!-- Table Row 4 -->
+<tr class="hover:bg-surface-container-high/30 border-t border-white/5 transition-colors group">
+<td class="px-8 py-5">
+<span class="text-sm font-bold text-primary">YOU</span>
+</td>
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg overflow-hidden bg-primary/20 ring-1 ring-primary/40">
+<img alt="User" class="w-full h-full object-cover" data-alt="portrait of professional man in studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrMXYoSgZRPuIeux8uzsUO5OOhivjl2ZonBWfQ5MA6eOpJr3WmwOJSKSB3xYEMED0VpY2gkdBhYsWolhHr4dcQKrklPrIHscGU1IwRttEe2d-5SHQIQ7Q9pMYakaZd01-wPIZd2MDpvS9HJl_vEcK3Ie3jx4dtGtzFBPnpKmS9V9m0z-dLpWkPUSHDUbtGYfIImJFvyBqTZblJjDcNk5xuVTAimgvl_BCdvJkmHmFcyUc3lwmPL9ixd7YNq0RU-IPA3biFalnXNvo"/>
+</div>
+<div>
+<span class="block text-sm font-bold tracking-tight">Top Predictor</span>
+<span class="text-[10px] text-primary/80">Level 42 Curator</span>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="px-2 py-1 rounded bg-primary text-on-primary text-[9px] font-black uppercase tracking-tighter">Elite</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-medium">61.4%</span>
+</td>
+<td class="px-8 py-5 text-right">
+<span class="text-sm font-bold text-on-surface tracking-tight">$4,210.00</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-8 py-6 bg-surface-container-low border-t border-white/5 flex justify-center">
+<button class="px-8 py-3 bg-surface-container-high rounded-xl text-[10px] font-black uppercase tracking-[0.2em] text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-all">Load More Critics</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center h-20 px-4 pb-4 bg-surface/60 dark:bg-[#131313]/60 backdrop-blur-2xl no-line tonal-layering">
+<button class="flex flex-col items-center justify-center text-gray-500 hover:text-[#0988F0] transition-colors active:scale-90">
+<span class="material-symbols-outlined text-2xl" data-icon="movie_filter">movie_filter</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium mt-1">Markets</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-500 hover:text-[#0988F0] transition-colors active:scale-90">
+<span class="material-symbols-outlined text-2xl" data-icon="Insert_chart">insert_chart</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium mt-1">Detail</span>
+</button>
+<button class="flex flex-col items-center justify-center text-gray-500 hover:text-[#0988F0] transition-colors active:scale-90">
+<span class="material-symbols-outlined text-2xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium mt-1">Portfolio</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#0988F0] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#0988F0] after:rounded-full active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="leaderboard" style="font-variation-settings: 'FILL' 1;">leaderboard</span>
+<span class="font-['Inter'] text-[10px] uppercase tracking-[0.1em] font-medium mt-1">Rankings</span>
+</button>
+</nav>
+<!-- Background Decorative Elements -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-20">
+<div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[#0988F0] blur-[160px] opacity-20"></div>
+<div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[#FF4500] blur-[160px] opacity-10"></div>
+</div>
+</body></html>

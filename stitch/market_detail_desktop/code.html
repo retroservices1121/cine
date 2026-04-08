@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e2e2e2",
+                    "on-secondary": "#601400",
+                    "on-error-container": "#ffdad6",
+                    "surface-bright": "#393939",
+                    "on-secondary-fixed-variant": "#872000",
+                    "surface-container-high": "#2a2a2a",
+                    "inverse-surface": "#e2e2e2",
+                    "secondary-fixed-dim": "#ffb5a0",
+                    "on-tertiary-fixed-variant": "#504629",
+                    "on-background": "#e2e2e2",
+                    "on-primary-container": "#002a51",
+                    "surface-tint": "#a4c9ff",
+                    "surface-container-low": "#1b1b1b",
+                    "surface-container": "#1f1f1f",
+                    "error": "#ffb4ab",
+                    "tertiary": "#d4c6a0",
+                    "inverse-on-surface": "#303030",
+                    "background": "#131313",
+                    "on-surface-variant": "#c0c7d5",
+                    "on-primary-fixed-variant": "#004883",
+                    "primary-fixed-dim": "#a4c9ff",
+                    "tertiary-fixed": "#f1e1ba",
+                    "secondary-fixed": "#ffdbd1",
+                    "error-container": "#93000a",
+                    "secondary": "#ffb5a0",
+                    "outline-variant": "#404753",
+                    "on-primary-fixed": "#001c39",
+                    "surface-container-highest": "#353535",
+                    "on-primary": "#00315d",
+                    "primary-container": "#2793fb",
+                    "primary": "#a4c9ff",
+                    "surface-dim": "#131313",
+                    "tertiary-container": "#9c906d",
+                    "primary-fixed": "#d4e3ff",
+                    "surface-container-lowest": "#0e0e0e",
+                    "outline": "#8a919e",
+                    "on-tertiary-container": "#31290f",
+                    "inverse-primary": "#005fac",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#3b0900",
+                    "surface-variant": "#353535",
+                    "on-tertiary-fixed": "#221b03",
+                    "tertiary-fixed-dim": "#d4c6a0",
+                    "surface": "#131313",
+                    "secondary-container": "#ff5625",
+                    "on-tertiary": "#383015",
+                    "on-secondary-container": "#541100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .noir-glass {
+            background: rgba(19, 19, 19, 0.6);
+            backdrop-filter: blur(24px);
+        }
+        .primary-gradient {
+            background: linear-gradient(135deg, #a4c9ff 0%, #2793fb 100%);
+        }
+        .marquee-text {
+            letter-spacing: -0.04em;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary/30">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl dark:bg-[#131313]/60 flex justify-between items-center px-8 h-20 w-full max-w-full shadow-[0_8px_32px_0_rgba(9,136,240,0.08)]">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold tracking-tighter text-white font-headline">THE CINEMATIC EXCHANGE</span>
+<div class="hidden md:flex gap-8 items-center h-full">
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white border-b-2 border-[#0988F0] pb-1" href="#">Markets</a>
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Awards</a>
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Box Office</a>
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Rankings</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 mr-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-white transition-all active:scale-95 duration-200">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-white transition-all active:scale-95 duration-200">account_balance_wallet</button>
+</div>
+<button class="primary-gradient text-on-primary font-headline font-bold px-6 py-2.5 rounded-xl active:scale-95 transition-all">Connect Wallet</button>
+</div>
+</nav>
+<!-- SideNavBar (Hidden on main detail canvas, but present as per JSON hierarchy for structure) -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r-0 bg-[#131313] flex flex-col h-full py-8 gap-4 hidden lg:flex mt-20">
+<div class="px-6 mb-8">
+<h2 class="font-['Space_Grotesk'] font-bold text-white text-xl">The Noir Ledger</h2>
+<p class="text-white/50 text-xs uppercase tracking-widest mt-1">High-Stakes Prediction</p>
+</div>
+<nav class="flex-1 space-y-2">
+<div class="bg-surface-container-high text-[#0988F0] font-semibold rounded-r-full flex items-center px-6 py-3 cursor-pointer transition-transform active:translate-x-1">
+<span class="material-symbols-outlined mr-4" style="font-variation-settings: 'FILL' 1;">theaters</span>
+<span class="font-['Inter'] leading-[1.6] text-sm">Premiere Markets</span>
+</div>
+<div class="text-white/50 hover:text-white px-6 py-3 hover:bg-white/5 transition-all flex items-center cursor-pointer transition-transform active:translate-x-1">
+<span class="material-symbols-outlined mr-4">pie_chart</span>
+<span class="font-['Inter'] leading-[1.6] text-sm">My Portfolio</span>
+</div>
+<div class="text-white/50 hover:text-white px-6 py-3 hover:bg-white/5 transition-all flex items-center cursor-pointer transition-transform active:translate-x-1">
+<span class="material-symbols-outlined mr-4">military_tech</span>
+<span class="font-['Inter'] leading-[1.6] text-sm">Leaderboard</span>
+</div>
+<div class="text-white/50 hover:text-white px-6 py-3 hover:bg-white/5 transition-all flex items-center cursor-pointer transition-transform active:translate-x-1">
+<span class="material-symbols-outlined mr-4">movie_filter</span>
+<span class="font-['Inter'] leading-[1.6] text-sm">Film Credits</span>
+</div>
+<div class="text-white/50 hover:text-white px-6 py-3 hover:bg-white/5 transition-all flex items-center cursor-pointer transition-transform active:translate-x-1">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-['Inter'] leading-[1.6] text-sm">Settings</span>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-surface-container-highest text-white font-headline py-3 rounded-xl mb-6 hover:bg-white/10 transition-all">Place New Prediction</button>
+<div class="space-y-4">
+<div class="flex items-center text-white/40 text-xs hover:text-white cursor-pointer transition-all">
+<span class="material-symbols-outlined text-sm mr-2">help_outline</span> Help Center
+                </div>
+<div class="flex items-center text-white/40 text-xs hover:text-white cursor-pointer transition-all">
+<span class="material-symbols-outlined text-sm mr-2">gavel</span> Legal
+                </div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-0 lg:ml-64 pt-28 px-8 pb-12 min-h-screen">
+<!-- Hero Header -->
+<header class="relative w-full h-[400px] rounded-full overflow-hidden mb-12">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="cinematic film still of a dark smoky jazz club with neon blue lighting and a vintage camera in foreground" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEWH3NXdtQDjz1cDRZsqfyo97vc_xwZrbAkOXCpRwlen57Wbl5mRldrmRSjM3jRO2lAjR1mYMaIDwvq71RxU9_QyP7UwggfQ6KTWlEheoEL354htwT8j7L-KDy8C0sTy6Fj7bwp3bh9mbz_g9xSm0zlygtCXHANr1WeKPeOo1NLjF4oNN7bXK_AxxfM1LmyJVLMNuOfWDPEHn28IA-zf66iSI7i0RsFWjFXT6fxjQY8ggAf7Vrald2H8UaD8P0FRYUNcB45LPrUyE')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="absolute bottom-12 left-12 max-w-2xl">
+<div class="flex gap-3 mb-4">
+<span class="px-3 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold tracking-widest uppercase rounded-full">ENDING SOON</span>
+<span class="px-3 py-1 bg-surface-container-highest text-white text-[10px] font-bold tracking-widest uppercase rounded-full">ACADEMY PREDICTION</span>
+</div>
+<h1 class="font-headline text-6xl font-bold tracking-tight text-white mb-4 marquee-text">WILL 'NOIR FALLS' WIN BEST CINEMATOGRAPHY AT THE 97TH AWARDS?</h1>
+<div class="flex items-center gap-6 text-on-surface-variant font-label text-sm uppercase tracking-widest">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<span>Volume: $1.2M</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">schedule</span>
+<span>Closes in: 14h 22m</span>
+</div>
+</div>
+</div>
+</header>
+<div class="grid grid-cols-12 gap-12">
+<!-- Left Column: Chart & Debates -->
+<div class="col-span-12 lg:col-span-8 space-y-12">
+<!-- Price Chart Card -->
+<section class="bg-surface-container-low rounded-xl p-8">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="text-white/60 font-label text-xs uppercase tracking-widest mb-1">CURRENT PROBABILITY</h3>
+<div class="text-4xl font-headline font-bold text-white">68.4% <span class="text-primary-container text-lg ml-2 font-medium">+2.4%</span></div>
+</div>
+<div class="flex bg-surface-container-highest rounded-full p-1">
+<button class="px-4 py-1.5 text-xs font-bold text-white/50 hover:text-white transition-all">1H</button>
+<button class="px-4 py-1.5 text-xs font-bold bg-primary text-on-primary rounded-full transition-all">1D</button>
+<button class="px-4 py-1.5 text-xs font-bold text-white/50 hover:text-white transition-all">1W</button>
+<button class="px-4 py-1.5 text-xs font-bold text-white/50 hover:text-white transition-all">ALL</button>
+</div>
+</div>
+<!-- Chart Placeholder with Visual Stylization -->
+<div class="h-[320px] w-full relative flex items-end gap-1">
+<!-- Simulated Chart Bars -->
+<div class="flex-1 bg-primary/10 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/15 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[55%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[50%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/80 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 primary-gradient h-[68%] rounded-t-sm shadow-[0_0_20px_rgba(39,147,251,0.4)]"></div>
+<div class="absolute bottom-0 left-0 w-full h-[1px] bg-outline-variant/20"></div>
+</div>
+</section>
+<!-- Critic Debate Section -->
+<section>
+<div class="flex items-center gap-4 mb-8">
+<div class="h-[1px] flex-1 bg-outline-variant/30"></div>
+<h2 class="font-headline font-bold text-white uppercase tracking-widest text-sm">Critic Debate</h2>
+<div class="h-[1px] flex-1 bg-outline-variant/30"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Critic Card 1 -->
+<div class="bg-surface-container-low p-6 rounded-xl border-t border-white/5">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img alt="Male critic" class="w-full h-full object-cover" data-alt="professional headshot of a middle-aged film critic wearing glasses and a turtleneck in soft studio lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnNkimA8QL2Vu53KQNYbwi0kGjKfqa_gPn9uWhWX3WPJTPrPvbmh7_fsi6R87aBSoqxZg8dVwNrEqjPYlohZLYcuSMwifrBh_QbrSRaFxhlQ3CXcLQtqqA7y05VqBjCLHJQXL7Le6xj_XcSJ0TL2e4TSZyIl6I-wBvfGXN56yWRhLpbRoMr8erymagvbYTZ5H6x2sS5N6rMjQW6sOEQql3Hoi5-tChwoUNMIBk9maZd4Agufgz7vSqNrxMDex2_bvcg2wT-McIkvA"/>
+</div>
+<div>
+<h4 class="text-white font-bold font-headline">Arthur Penhaligon</h4>
+<p class="text-tertiary font-label text-[10px] uppercase tracking-tighter">Verified Film Critic • Variety</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<span class="text-[10px] font-bold text-primary-container">PREDICTS: YES</span>
+<span class="text-[10px] text-white/30 italic">2h ago</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed italic">
+                                "The way Deakins-lite textures the shadows in 'Noir Falls' is unprecedented. It's not just a film; it's a 120-minute masterclass in monochromatic emotional resonance."
+                            </p>
+</div>
+<!-- Critic Card 2 -->
+<div class="bg-surface-container-low p-6 rounded-xl border-t border-white/5">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img alt="Female critic" class="w-full h-full object-cover" data-alt="professional headshot of a stylish female film journalist with dark hair and minimalist jewelry" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPmFs9LssaNY8ojaoKTGF6HRlAOtv9xn8osh3NF6AUgrnlno-mRxpDb-YH_DCYmgl2GhMKdIXt1AcM1ZJR_OcXIERh2DRMlyg3099PVvzsOEkm8ol5Yqp_ReNQW6tmmoP1dJI8wO31rrhEwrJ54uFnINQrEmGHN5Fj6mWedNg5N_TCFFWlddwZDJFKoQCIZ7nMpne57EyGG-r0wmzF_MVGm2VDmEnllNp5Lx7GfbOyUfP2G08P-YHPitxTPFw0rq4fujBqeXXrlfo"/>
+</div>
+<div>
+<h4 class="text-white font-bold font-headline">Elena Vance</h4>
+<p class="text-tertiary font-label text-[10px] uppercase tracking-tighter">Chief Editor • IndieWire</p>
+</div>
+<div class="ml-auto flex flex-col items-end">
+<span class="text-[10px] font-bold text-secondary">PREDICTS: NO</span>
+<span class="text-[10px] text-white/30 italic">5h ago</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed italic">
+                                "While visually striking, the Academy usually favors more 'expansive' landscape cinematography. 'Noir Falls' is too intimate, too claustrophobic for the win."
+                            </p>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column: Prediction Slip & Cast -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Prediction Slip -->
+<div class="noir-glass rounded-xl p-8 border-t border-white/10 sticky top-28">
+<h3 class="font-headline font-bold text-xl text-white mb-6 uppercase tracking-tight">Place Prediction</h3>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<button class="py-4 rounded-full font-headline font-bold text-lg bg-surface-container-high border-2 border-primary-container text-white transition-all">
+                            YES <span class="block text-xs font-normal opacity-60">Buy at 68.4¢</span>
+</button>
+<button class="py-4 rounded-full font-headline font-bold text-lg bg-surface-container-high border-2 border-transparent text-white/40 hover:border-secondary transition-all">
+                            NO <span class="block text-xs font-normal opacity-60">Buy at 32.1¢</span>
+</button>
+</div>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between text-xs font-label uppercase tracking-widest text-on-surface-variant">
+<span>Amount (USDC)</span>
+<span>Balance: 420.00</span>
+</div>
+<div class="relative">
+<input class="w-full bg-surface-container-highest border-none rounded-xl py-4 px-6 text-white font-headline text-2xl focus:ring-1 focus:ring-primary outline-none appearance-none" placeholder="0.00" type="number"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-2">
+<button class="px-2 py-1 bg-surface-container-high text-[10px] text-white font-bold rounded hover:bg-white/10 transition-all">MAX</button>
+</div>
+</div>
+<!-- Confidence Slider -->
+<div class="pt-4">
+<div class="h-1.5 w-full bg-surface-variant rounded-full relative">
+<div class="absolute h-full w-[40%] primary-gradient rounded-full"></div>
+<div class="absolute left-[40%] top-1/2 -translate-y-1/2 w-5 h-5 primary-gradient rounded-full border-4 border-surface shadow-[0_0_15px_rgba(39,147,251,0.6)] cursor-pointer"></div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] font-bold text-white/40 uppercase tracking-tighter">
+<span>Low Risk</span>
+<span>High Conviction</span>
+</div>
+</div>
+</div>
+<div class="space-y-3 mb-8 text-sm">
+<div class="flex justify-between text-white/60">
+<span>Expected Payout</span>
+<span class="text-white">$146.20</span>
+</div>
+<div class="flex justify-between text-white/60">
+<span>Network Fee</span>
+<span class="text-white">$0.45</span>
+</div>
+</div>
+<button class="w-full primary-gradient text-on-primary font-headline font-bold py-5 rounded-xl text-lg shadow-[0_8px_24px_rgba(39,147,251,0.3)] active:scale-95 transition-all">
+                        CONFIRM PREDICTION
+                    </button>
+</div>
+<!-- Cast Predictions Bento -->
+<section class="bg-surface-container-low rounded-xl p-8">
+<h3 class="font-headline font-bold text-white text-sm uppercase tracking-widest mb-6">Cast Sentiment</h3>
+<div class="space-y-6">
+<!-- Actor 1 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+<img alt="Lead actor" class="w-full h-full object-cover" data-alt="close-up portrait of a rugged male actor in a fedora with dramatic film noir shadow lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPw4QqDiVrfSi0Ak75FXI5j4_YxgiDKdqaNFfNJIICrYa2Rdazqj7b9BKy6ZT5BozLCjcOjqV-K9PSr-ZWaLPOS3yFtctUq2jMxIMGA2_sg2vDLo2Ei02FUSNIqQVXUuLkjJ1Z_saivhAIbePlUANWPxmyZF7y-Ovt-Mp529WNjbrOMMEdAO0w8W52LiBgmqS_dPRiS6YdGVLBNqh59VPWGxGQFj7gB0xJ4X9kBQORsPstfQfAIlMeXlfaz48DtJ0m2FRe4J0BxiY"/>
+</div>
+<div>
+<p class="text-white text-xs font-bold font-headline">Julian Sterling</p>
+<p class="text-[10px] text-white/40 uppercase">Lead Actor</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-primary-container font-headline font-bold text-sm italic">"A Visual Triumph"</span>
+</div>
+</div>
+<!-- Actor 2 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden grayscale hover:grayscale-0 transition-all duration-500">
+<img alt="Actress" class="w-full h-full object-cover" data-alt="glamourous film actress with a vintage 1940s hairstyle and elegant dress in soft low-key lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeE2xNHxoolNrwT-AEIMJAkzHRehPYId66NywtdDcjZ3BH3nFHry6h_sqhJtZuAIRYu-ZaX_K_eDZlm9R1ifLKzIU6YdGzdyxRLzuZtPxBZrGH1Yw72Xo67DIHAnsgMGvV2d27QVSLXMpLH9mAFrLg4WZC2EMuyVQZQCZlRC7sCy-jUGnkRqPrkHvi8pD0oO4O1kDJXXjWPllaUwwD3_FC0d33mgG5AAzvSv22GnWycPsRY4gXEvSoJLTZSF6T4IRXD6qu5r-Ulck"/>
+</div>
+<div>
+<p class="text-white text-xs font-bold font-headline">Sofia Moretti</p>
+<p class="text-[10px] text-white/40 uppercase">Supporting Lead</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-white/60 font-headline font-bold text-sm italic">"The light is a character"</span>
+</div>
+</div>
+<!-- Mini Stats Grid -->
+<div class="grid grid-cols-2 gap-4 pt-4">
+<div class="bg-surface-container-high rounded-lg p-4">
+<span class="block text-[8px] font-bold text-white/40 uppercase tracking-widest mb-1">PRO PREDICTORS</span>
+<span class="text-white font-headline text-lg">82% <span class="text-primary-container text-[10px]">YES</span></span>
+</div>
+<div class="bg-surface-container-high rounded-lg p-4">
+<span class="block text-[8px] font-bold text-white/40 uppercase tracking-widest mb-1">RETAIL TREND</span>
+<span class="text-white font-headline text-lg">45% <span class="text-secondary text-[10px]">DOWN</span></span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</body></html>

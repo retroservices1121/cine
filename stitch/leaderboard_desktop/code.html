@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Leaderboard | The Cinematic Exchange</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e2e2e2",
+                    "on-secondary": "#601400",
+                    "on-error-container": "#ffdad6",
+                    "surface-bright": "#393939",
+                    "on-secondary-fixed-variant": "#872000",
+                    "surface-container-high": "#2a2a2a",
+                    "inverse-surface": "#e2e2e2",
+                    "secondary-fixed-dim": "#ffb5a0",
+                    "on-tertiary-fixed-variant": "#504629",
+                    "on-background": "#e2e2e2",
+                    "on-primary-container": "#002a51",
+                    "surface-tint": "#a4c9ff",
+                    "surface-container-low": "#1b1b1b",
+                    "surface-container": "#1f1f1f",
+                    "error": "#ffb4ab",
+                    "tertiary": "#d4c6a0",
+                    "inverse-on-surface": "#303030",
+                    "background": "#131313",
+                    "on-surface-variant": "#c0c7d5",
+                    "on-primary-fixed-variant": "#004883",
+                    "primary-fixed-dim": "#a4c9ff",
+                    "tertiary-fixed": "#f1e1ba",
+                    "secondary-fixed": "#ffdbd1",
+                    "error-container": "#93000a",
+                    "secondary": "#ffb5a0",
+                    "outline-variant": "#404753",
+                    "on-primary-fixed": "#001c39",
+                    "surface-container-highest": "#353535",
+                    "on-primary": "#00315d",
+                    "primary-container": "#2793fb",
+                    "primary": "#a4c9ff",
+                    "surface-dim": "#131313",
+                    "tertiary-container": "#9c906d",
+                    "primary-fixed": "#d4e3ff",
+                    "surface-container-lowest": "#0e0e0e",
+                    "outline": "#8a919e",
+                    "on-tertiary-container": "#31290f",
+                    "inverse-primary": "#005fac",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#3b0900",
+                    "surface-variant": "#353535",
+                    "on-tertiary-fixed": "#221b03",
+                    "tertiary-fixed-dim": "#d4c6a0",
+                    "surface": "#131313",
+                    "secondary-container": "#ff5625",
+                    "on-tertiary": "#383015",
+                    "on-secondary-container": "#541100"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Space Grotesk"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #131313; color: #e2e2e2; }
+        .font-headline { font-family: 'Space Grotesk', sans-serif; }
+        .glass-panel { background: rgba(19, 19, 19, 0.6); backdrop-filter: blur(24px); }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl dark:bg-[#131313]/60 flex justify-between items-center px-8 h-20 w-full max-w-full shadow-[0_8px_32px_0_rgba(9,136,240,0.08)]">
+<div class="flex items-center gap-12">
+<span class="text-2xl font-bold tracking-tighter text-white font-headline">THE CINEMATIC EXCHANGE</span>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Markets</a>
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Awards</a>
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Box Office</a>
+<a class="font-['Space_Grotesk'] tracking-[-0.04em] uppercase text-sm text-white/60 hover:text-white transition-colors" href="#">Rankings</a>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
+<input class="bg-surface-container-highest border-none rounded-xl pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary w-64 outline-none" placeholder="Search markets..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-white/60 hover:text-white cursor-pointer transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-white/60 hover:text-white cursor-pointer transition-colors" data-icon="account_balance_wallet">account_balance_wallet</span>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary px-6 py-2 rounded-xl font-headline text-sm font-bold uppercase tracking-tight active:scale-95 duration-200">Connect Wallet</button>
+</div>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 border-r-0 bg-[#131313] flex flex-col h-full py-8 gap-4 z-40 mt-20">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">movie_filter</span>
+</div>
+<div>
+<h2 class="font-['Space_Grotesk'] font-bold text-white leading-none">The Noir Ledger</h2>
+<p class="text-[10px] uppercase tracking-widest text-primary/70 mt-1">High-Stakes Prediction</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-white/50 hover:text-white px-6 py-3 flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm hover:bg-white/5 transition-all cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="theaters">theaters</span>
+                Premiere Markets
+            </a>
+<a class="text-white/50 hover:text-white px-6 py-3 flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm hover:bg-white/5 transition-all cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="pie_chart">pie_chart</span>
+                My Portfolio
+            </a>
+<a class="bg-surface-container-high text-[#0988F0] font-semibold rounded-r-full px-6 py-3 flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="military_tech" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+                Leaderboard
+            </a>
+<a class="text-white/50 hover:text-white px-6 py-3 flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm hover:bg-white/5 transition-all cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="movie_filter">movie_filter</span>
+                Film Credits
+            </a>
+<a class="text-white/50 hover:text-white px-6 py-3 flex items-center gap-4 font-['Inter'] leading-[1.6] text-sm hover:bg-white/5 transition-all cursor-pointer active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-surface-container-highest text-white py-3 rounded-xl font-headline text-xs font-bold uppercase tracking-widest hover:bg-white/10 transition-all active:scale-95">Place New Prediction</button>
+<div class="mt-8 space-y-4">
+<a class="flex items-center gap-3 text-white/40 hover:text-white transition-colors text-xs" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help_outline">help_outline</span>
+                    Help Center
+                </a>
+<a class="flex items-center gap-3 text-white/40 hover:text-white transition-colors text-xs" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="gavel">gavel</span>
+                    Legal
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 mt-20 p-12 min-h-screen">
+<header class="mb-16">
+<div class="flex items-end gap-4 mb-4">
+<h1 class="text-6xl font-headline font-bold tracking-tighter text-white uppercase">Leaderboard</h1>
+<div class="h-1 w-24 bg-primary mb-3"></div>
+</div>
+<p class="text-on-surface-variant max-w-2xl text-lg font-light leading-relaxed">Honoring the industry's most accurate prediction analysts. Where intuition meets the noir reality of the box office.</p>
+</header>
+<!-- Top Critics (Hero Podium) -->
+<section class="grid grid-cols-3 gap-8 mb-20 items-end">
+<!-- Rank 2 -->
+<div class="bg-surface-container-low p-8 rounded-2xl flex flex-col items-center text-center relative overflow-hidden group border-t border-white/5">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full p-1 bg-white/10">
+<img alt="User Avatar" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="professional headshot of a stylish man with spectacles in a dark moody cinematic lighting environment" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCISpi1qpjIkE1Gwu3wSKOW1Tvb9JgX-SBK5YQHvKO55dcDo4p1t791XafB459WH9BpKVJtPRamfo5BjP_jyPIrpdFr3OGLLsYlr-jLOpPaOsGueptfPbpgpLlahC6at0QlAJNRd2gxy33jGFTRc2p7juj_Y7citTSHt9rpNEtZL-PZSYHlO5OAq8qvmJ9YKNvYfn-dsYLEKbVCbNIR2MEUXy-P2jWtCQ-u4s0s8wUDRlXl5Hn0ieYaW_fB3xFQPnNg211tBcDqeL4"/>
+</div>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 bg-surface-container-highest rounded-full flex items-center justify-center border border-white/10">
+<span class="text-xs font-headline font-bold text-white">2</span>
+</div>
+</div>
+<h3 class="text-xl font-headline font-bold text-white mb-1">Julian Thorne</h3>
+<p class="text-primary text-sm font-headline tracking-widest uppercase mb-4">Executive Critic</p>
+<div class="grid grid-cols-2 gap-4 w-full border-t border-white/5 pt-6">
+<div class="text-left">
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Win Rate</span>
+<span class="text-lg font-headline text-white">78.4%</span>
+</div>
+<div class="text-right">
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Credits</span>
+<span class="text-lg font-headline text-white">12.8k</span>
+</div>
+</div>
+</div>
+<!-- Rank 1 (The Premiere Choice) -->
+<div class="bg-gradient-to-b from-surface-container-high to-surface-container-low p-10 rounded-2xl flex flex-col items-center text-center relative overflow-hidden group shadow-[0_24px_48px_-12px_rgba(9,136,240,0.15)] border-t border-primary/20 scale-105 z-10">
+<div class="absolute top-0 right-0 p-4">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">military_tech</span>
+</div>
+<div class="relative mb-8">
+<div class="w-32 h-32 rounded-full p-1 bg-gradient-to-tr from-primary to-secondary">
+<img alt="User Avatar" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="powerful portrait of a professional woman looking directly at camera with confident expression in soft cinematic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTu2Vxa_fhhSv-gmZR-DZAkxxwg0pOiFUOq-DmVM7kHJb9SGBuDG1g-v_2pp_-kaEWzNbbk_h9G9HOwPTTr7xx6J2uDNC2iAu0Sn3D3SBHB5EHKYzqrMpcQuj55eKbo5zlm_WDXYPnBtATh8DHYjFL_qM0F0dYEzWofm1-_v4_KAntpUWTg7cFQGoqjjs2YXjcFzUDQfaChgc7C9dNxrMSsNeg4H9XhRO3fjwry5bPieNBlbnsZcxBmI45pecXiYFXZS5Kjz8SiQI"/>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary px-4 py-1 rounded-full text-xs font-headline font-bold uppercase tracking-widest">Master</div>
+</div>
+<h3 class="text-3xl font-headline font-bold text-white mb-2">Elena Rossi</h3>
+<p class="text-secondary text-sm font-headline tracking-widest uppercase mb-6">The Grand Oracle</p>
+<div class="grid grid-cols-3 gap-6 w-full border-t border-white/10 pt-8">
+<div>
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Profit</span>
+<span class="text-xl font-headline text-primary">+242%</span>
+</div>
+<div>
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Streak</span>
+<span class="text-xl font-headline text-white">14</span>
+</div>
+<div>
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Rank</span>
+<span class="text-xl font-headline text-white">#1</span>
+</div>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="bg-surface-container-low p-8 rounded-2xl flex flex-col items-center text-center relative overflow-hidden group border-t border-white/5">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="relative mb-6">
+<div class="w-24 h-24 rounded-full p-1 bg-white/10">
+<img alt="User Avatar" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="close up headshot of an older man with grey hair and sharp features in dramatic dark lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRUM3N2-ccVvh_RVPzNuvazk_CWWStBZ90YWbnqx8qOIOsuXIPnPpy5_2fHCmVxQamH6dgDomzzVT08bD4oZDomJkEx-X0-l7MePayg75NQRU4nwNdL4GiXLxJCcnw2uhaI0ijwFC_qqQDhdBqcIQEGcZw5nQqNbeHGHnr4nnanRrY9SADfYLrp4S9LMDjjPJzv3-uPGtGv-wM2bE17t5nhPaNY1WgZArSp9ANtEmUvw4YNTG1_717eDSDpZJpmfiNYNZdRFds-AY"/>
+</div>
+<div class="absolute -bottom-2 -right-2 w-8 h-8 bg-surface-container-highest rounded-full flex items-center justify-center border border-white/10">
+<span class="text-xs font-headline font-bold text-white">3</span>
+</div>
+</div>
+<h3 class="text-xl font-headline font-bold text-white mb-1">Marcus Vane</h3>
+<p class="text-tertiary text-sm font-headline tracking-widest uppercase mb-4">Senior Analyst</p>
+<div class="grid grid-cols-2 gap-4 w-full border-t border-white/5 pt-6">
+<div class="text-left">
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Win Rate</span>
+<span class="text-lg font-headline text-white">74.2%</span>
+</div>
+<div class="text-right">
+<span class="block text-[10px] text-white/40 uppercase tracking-tighter">Credits</span>
+<span class="text-lg font-headline text-white">9.5k</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Filters & Table Section -->
+<section class="bg-surface-container-low rounded-3xl overflow-hidden shadow-2xl">
+<div class="p-8 border-b border-white/5 flex flex-wrap items-center justify-between gap-6">
+<div class="flex items-center gap-8">
+<div class="flex bg-surface-container-highest rounded-full p-1">
+<button class="px-6 py-2 rounded-full text-xs font-headline font-bold uppercase tracking-widest bg-primary text-on-primary">All Critics</button>
+<button class="px-6 py-2 rounded-full text-xs font-headline font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors">Box Office</button>
+<button class="px-6 py-2 rounded-full text-xs font-headline font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors">Awards</button>
+</div>
+<div class="h-8 w-[1px] bg-white/10"></div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] text-white/40 uppercase tracking-widest">Timeframe:</span>
+<select class="bg-transparent border-none text-white text-xs font-headline font-bold uppercase focus:ring-0 cursor-pointer">
+<option>Season 04</option>
+<option>All-Time</option>
+<option>Monthly</option>
+</select>
+</div>
+</div>
+<div class="relative flex-1 max-w-sm">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-white/30">search</span>
+<input class="w-full bg-surface-container-highest border-none rounded-xl pl-12 pr-4 py-3 text-sm focus:ring-1 focus:ring-primary outline-none text-white placeholder:text-white/20" placeholder="Search by name or credit ID..." type="text"/>
+</div>
+</div>
+<!-- Standard Ranking Table -->
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-[10px] uppercase tracking-[0.2em] text-white/40 border-b border-white/5">
+<th class="px-8 py-6 font-medium">Rank</th>
+<th class="px-8 py-6 font-medium">Critic</th>
+<th class="px-8 py-6 font-medium">Score</th>
+<th class="px-8 py-6 font-medium">Predictions</th>
+<th class="px-8 py-6 font-medium">Yield</th>
+<th class="px-8 py-6 font-medium">Consistency</th>
+<th class="px-8 py-6 font-medium text-right">Status</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<!-- Row 4 -->
+<tr class="hover:bg-white/[0.02] border-b border-white/5 transition-colors group">
+<td class="px-8 py-6">
+<span class="font-headline font-bold text-white/40">04</span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<img alt="Avatar" class="w-10 h-10 rounded-lg grayscale group-hover:grayscale-0 transition-all" data-alt="moody street style portrait of a man looking away with high contrast shadow play" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuxmklT6CunB1ElEapO_LqoAK402uxpvBE5gI5RXV2YEJSdJ6cg08c9aMP0uYYe9ufkH74hewHSznouV4PxGgpPBQVDboEZoRfQ9LM_RwO5nucVFF622iUKL6TdwecxQC6U3NL2c-ubW4WaVThhIX4nkb3yuBJxNA4W6F4wuexiSL-4orh8-tTZ7JfflLSdDVoxSbHnM1e6wUx75NQ0_b7PT0j9KvvbN4iTqgVxw5ucoR0VeaiXlH8jdNcv8oGtxAYX2ekP0TNh4g"/>
+<div>
+<p class="font-bold text-white">Dominic Shaw</p>
+<p class="text-[10px] text-white/40 uppercase tracking-tighter">Neo-Noir Expert</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-headline font-medium text-white">2,842</td>
+<td class="px-8 py-6 text-white/60">142</td>
+<td class="px-8 py-6 text-primary font-headline">+18.2%</td>
+<td class="px-8 py-6">
+<div class="w-24 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 72%;"></div>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-white/[0.02] border-b border-white/5 transition-colors group">
+<td class="px-8 py-6">
+<span class="font-headline font-bold text-white/40">05</span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<img alt="Avatar" class="w-10 h-10 rounded-lg grayscale group-hover:grayscale-0 transition-all" data-alt="editorial portrait of a woman with dramatic lighting from the side creating deep shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzNmpsZ4Xo6uf_MsrmdShIC7jzZu1qE1MNedlqr59gS3Wq6W623NhjQiAygwwyzSoh3XzzPmPnhA6yztU0i6kuQT1ZngGJIp1Wep7cD3JYk--1cVXWqdd3DkrvIzhlqmMV5Fd1-5kr42bHih-p4zFlUMjJSJ7I3lZZ0R6YD1r2ehkg_GUk1Ctwk8SmqUSqqqgKUPkqz5v_xPt5a2bbz66_3BKTVesNfeZoTgs8OoaAZ7Zpn3w4OBvi7DCgGkASHl9IdeS_lK5IZ6s"/>
+<div>
+<p class="font-bold text-white">Sloane Bennett</p>
+<p class="text-[10px] text-white/40 uppercase tracking-tighter">Box Office Analyst</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-headline font-medium text-white">2,710</td>
+<td class="px-8 py-6 text-white/60">98</td>
+<td class="px-8 py-6 text-primary font-headline">+14.5%</td>
+<td class="px-8 py-6">
+<div class="w-24 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 65%;"></div>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<span class="material-symbols-outlined text-white/20 text-sm">horizontal_rule</span>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="hover:bg-white/[0.02] border-b border-white/5 transition-colors group">
+<td class="px-8 py-6">
+<span class="font-headline font-bold text-white/40">06</span>
+</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center border border-white/5 text-white/20 font-headline font-bold">JD</div>
+<div>
+<p class="font-bold text-white">Jack Dalton</p>
+<p class="text-[10px] text-white/40 uppercase tracking-tighter">Indie Film Specialist</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 font-headline font-medium text-white">2,550</td>
+<td class="px-8 py-6 text-white/60">215</td>
+<td class="px-8 py-6 text-secondary font-headline">-2.4%</td>
+<td class="px-8 py-6">
+<div class="w-24 h-1.5 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 48%;"></div>
+</div>
+</td>
+<td class="px-8 py-6 text-right">
+<span class="material-symbols-outlined text-secondary text-sm">trending_down</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-8 flex items-center justify-between">
+<span class="text-xs text-white/30 uppercase tracking-widest font-headline">Showing 01 - 20 of 1,248 Critics</span>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/5 hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-white bg-white/10 font-headline font-bold text-xs">1</button>
+<button class="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/5 hover:text-white transition-all font-headline font-bold text-xs">2</button>
+<button class="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/5 hover:text-white transition-all font-headline font-bold text-xs">3</button>
+<button class="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-white/40 hover:bg-white/5 hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Background Elements -->
+<div class="fixed top-0 right-0 w-[800px] h-[800px] bg-primary/5 blur-[160px] rounded-full pointer-events-none -z-10 translate-x-1/2 -translate-y-1/2"></div>
+<div class="fixed bottom-0 left-0 w-[600px] h-[600px] bg-secondary/5 blur-[140px] rounded-full pointer-events-none -z-10 -translate-x-1/2 translate-y-1/2"></div>
+</body></html>
