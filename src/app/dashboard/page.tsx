@@ -111,6 +111,7 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
   const [optionB, setOptionB] = useState("No");
   const [endTime, setEndTime] = useState("");
   const [liquidity, setLiquidity] = useState("100");
+  const [imageUrl, setImageUrl] = useState("");
   const [privateKey, setPrivateKey] = useState("");
   const [chain, setChain] = useState("base");
   const [creating, setCreating] = useState(false);
@@ -165,6 +166,7 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
           option_b: optionB || "No",
           end_time: new Date(endTime).toISOString(),
           liquidity: Number(liquidity),
+          image_url: imageUrl || undefined,
           wallet_address: user.wallet.address,
           private_key: privateKey,
         }),
@@ -259,8 +261,8 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
                     className="px-4 py-2 bg-accent hover:bg-accent-hover text-white text-xs font-medium rounded-lg transition-colors">
                     View Market
                   </Link>
-                  <button onClick={() => { setCreateResult(null); setQuestion(""); setEndTime(""); }}
-                    className="px-4 py-2 bg-card-hover border border-border text-xs rounded-lg hover:border-border-hover transition-colors">
+                  <button onClick={() => { setCreateResult(null); setQuestion(""); setEndTime(""); setImageUrl(""); }}
+                    className="px-4 py-2 bg-surface-container-highest text-xs rounded-lg hover:bg-surface-bright transition-colors">
                     Create Another
                   </button>
                 </div>
@@ -268,35 +270,59 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
             ) : (
               <form onSubmit={handleCreate} className="space-y-4">
                 <div>
-                  <label className="text-xs font-medium mb-1.5 block">Question *</label>
+                  <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Question *</label>
                   <textarea value={question} onChange={(e) => setQuestion(e.target.value)}
                     placeholder="Will Bitcoin reach $200,000 by December 2026?" rows={3} maxLength={500}
-                    className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-accent/50 resize-none transition-colors" />
-                  <div className="text-[10px] text-text-muted text-right">{question.length}/500</div>
+                    className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary resize-none" />
+                  <div className="text-[10px] text-white/30 text-right mt-1">{question.length}/500</div>
                 </div>
+
+                {/* Market Image */}
+                <div>
+                  <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Market Image</label>
+                  <input type="url" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)}
+                    placeholder="https://example.com/image.jpg"
+                    className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/20 focus:outline-none focus:ring-1 focus:ring-primary" />
+                  <p className="text-[10px] text-white/30 mt-1">Paste an image URL. Displayed on the market card and hero.</p>
+                  {imageUrl && (
+                    <div className="mt-3 relative rounded-xl overflow-hidden h-36 bg-surface-container-high">
+                      <img
+                        src={imageUrl}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
+                      <button type="button" onClick={() => setImageUrl("")}
+                        className="absolute top-2 right-2 w-6 h-6 bg-black/60 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-black/80 transition-colors">
+                        <span className="material-symbols-outlined text-white text-[14px]">close</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-medium mb-1.5 block">Option A</label>
+                    <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Option A</label>
                     <input type="text" value={optionA} onChange={(e) => setOptionA(e.target.value)} placeholder="Yes"
-                      className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-accent/50 transition-colors" />
+                      className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary" />
                   </div>
                   <div>
-                    <label className="text-xs font-medium mb-1.5 block">Option B</label>
+                    <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Option B</label>
                     <input type="text" value={optionB} onChange={(e) => setOptionB(e.target.value)} placeholder="No"
-                      className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-accent/50 transition-colors" />
+                      className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary" />
                   </div>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="text-xs font-medium mb-1.5 block">End Date *</label>
+                    <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">End Date *</label>
                     <input type="datetime-local" value={endTime} onChange={(e) => setEndTime(e.target.value)}
                       min={new Date().toISOString().slice(0, 16)}
-                      className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-accent/50 transition-colors" />
+                      className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary" />
                   </div>
                   <div>
-                    <label className="text-xs font-medium mb-1.5 block">Chain</label>
+                    <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Chain</label>
                     <select value={chain} onChange={(e) => setChain(e.target.value)}
-                      className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-accent/50 transition-colors cursor-pointer">
+                      className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer">
                       <option value="base">Base (8453)</option>
                       <option value="polygon">Polygon (137)</option>
                       <option value="arbitrum">Arbitrum (42161)</option>
@@ -305,24 +331,22 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-medium mb-1.5 block">Initial Liquidity (USDC) *</label>
+                  <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Initial Liquidity (USDC) *</label>
                   <input type="number" value={liquidity} onChange={(e) => setLiquidity(e.target.value)} min={100} step={10}
-                    className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-sm font-mono focus:outline-none focus:border-accent/50 transition-colors" />
-                  <p className="text-[10px] text-text-muted mt-1">Min $100. Split 50/50 between pools.</p>
+                    className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-sm font-mono text-white focus:outline-none focus:ring-1 focus:ring-primary" />
+                  <p className="text-[10px] text-white/30 mt-1">Min $100. Split 50/50 between pools.</p>
                 </div>
                 <div>
-                  <label className="text-xs font-medium mb-1.5 block">Private Key *</label>
+                  <label className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1.5 block">Private Key *</label>
                   <input type="password" value={privateKey} onChange={(e) => setPrivateKey(e.target.value)} placeholder="0x..."
-                    className="w-full bg-bg border border-border rounded-lg px-3 py-2.5 text-xs font-mono focus:outline-none focus:border-accent/50 transition-colors" />
-                  <p className="text-[9px] text-text-muted mt-1 flex items-center gap-1">
-                    <svg className="w-3 h-3 text-amber shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                    </svg>
+                    className="w-full bg-surface-container-highest border-none rounded-xl px-4 py-3 text-xs font-mono text-white/80 focus:outline-none focus:ring-1 focus:ring-primary" />
+                  <p className="text-[9px] text-white/30 mt-1 flex items-center gap-1">
+                    <span className="material-symbols-outlined text-[12px] text-secondary/60">lock</span>
                     Sent directly to the exchange. Never stored.
                   </p>
                 </div>
                 {createError && (
-                  <div className="p-2.5 bg-red-dim rounded-lg"><p className="text-xs text-red">{createError}</p></div>
+                  <div className="p-3 bg-error/5 rounded-xl"><p className="text-xs text-error">{createError}</p></div>
                 )}
                 <button type="submit" disabled={creating}
                   className="w-full py-3 bg-accent hover:bg-accent-hover disabled:opacity-50 text-white text-sm font-medium rounded-lg transition-colors">

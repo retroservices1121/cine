@@ -357,6 +357,7 @@ export function createMarket(body: {
   end_time: string;
   token?: string;
   liquidity: number;
+  image_url?: string;
   wallet_address: string;
   private_key: string;
 }) {
