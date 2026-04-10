@@ -230,12 +230,12 @@ export default function TradePanel({ platform, marketId, outcomes }: TradePanelP
         </div>
       )}
 
-      {/* Fee notice for sells */}
-      {side === "sell" && quote && (
+      {/* Fee notice */}
+      {quote && (
         <div className="mb-4 p-3 bg-surface-container rounded-xl">
           <p className="text-white/40 text-[10px] uppercase tracking-[0.1em] mb-1">Platform Fee</p>
           <p className="text-white/60 text-xs">
-            1% fee on profit from winning trades. Deducted automatically via a separate USDC transfer you will sign.
+            1% fee on all transactions. Deducted automatically via a separate USDC transfer you will sign.
           </p>
         </div>
       )}

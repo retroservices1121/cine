@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useAuth, useSendTx } from "@/hooks/useAuth";
+import { useAuth, useSendTx, useSignMsg } from "@/hooks/useAuth";
 import { formatUsd, cn } from "@/lib/utils";
 import Link from "next/link";
 
@@ -489,6 +489,293 @@ function DashboardContent({ token, onLogout }: { token: string; onLogout: () => 
           </div>
         </div>
       </div>
+
+      {/* Fee Wallet Configuration */}
+      <FeeWalletSettings token={token} />
+    </div>
+  );
+}
+
+interface FeeWalletConfigData {
+  wallet1: string;
+  wallet2: string;
+  pendingChange?: {
+    newWallet1: string;
+    newWallet2: string;
+    proposedBy: string;
+    proposedAt: string;
+  } | null;
+}
+
+function FeeWalletSettings({ token }: { token: string }) {
+  const { authenticated, user, login } = useAuth();
+  const { signMessage: privySignMessage } = useSignMsg();
+
+  const [config, setConfig] = useState<FeeWalletConfigData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [newWallet1, setNewWallet1] = useState("");
+  const [newWallet2, setNewWallet2] = useState("");
+  const [proposing, setProposing] = useState(false);
+  const [approving, setApproving] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [status, setStatus] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchConfig = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/fee-wallets", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setConfig(data);
+      }
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
+  }, [token]);
+
+  useEffect(() => { fetchConfig(); }, [fetchConfig]);
+
+  const connectedAddress = user?.wallet?.address || "";
+  const isWallet1 = config?.wallet1?.toLowerCase() === connectedAddress.toLowerCase();
+  const isWallet2 = config?.wallet2?.toLowerCase() === connectedAddress.toLowerCase();
+  const isFeeWallet = isWallet1 || isWallet2;
+  const isPendingProposer = config?.pendingChange?.proposedBy?.toLowerCase() === connectedAddress.toLowerCase();
+
+  const signMsg = async (message: string): Promise<string> => {
+    const result = await privySignMessage({ message }, { address: connectedAddress });
+    return (result as { signature: string }).signature;
+  };
+
+  const handlePropose = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!authenticated || !connectedAddress) { login(); return; }
+    if (!isFeeWallet) { setError("Only current fee wallets can propose changes"); return; }
+
+    setProposing(true);
+    setError(null);
+    setStatus("Sign the proposal message in your wallet...");
+
+    try {
+      const message = `PopcornCine: Propose fee wallet change\nNew Wallet 1: ${newWallet1}\nNew Wallet 2: ${newWallet2}\nProposed by: ${connectedAddress}`;
+      const signature = await signMsg(message);
+
+      const res = await fetch("/api/admin/fee-wallets/propose", {
+        method: "POST",
+        headers: authHeaders(token),
+        body: JSON.stringify({
+          new_wallet_1: newWallet1,
+          new_wallet_2: newWallet2,
+          proposer_address: connectedAddress,
+          signature,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to propose");
+
+      setStatus("Proposal submitted! Awaiting approval from the other wallet.");
+      setNewWallet1("");
+      setNewWallet2("");
+      fetchConfig();
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Failed to propose change");
+    } finally {
+      setProposing(false);
+    }
+  };
+
+  const handleApprove = async () => {
+    if (!authenticated || !connectedAddress) { login(); return; }
+
+    setApproving(true);
+    setError(null);
+    setStatus("Sign the approval message in your wallet...");
+
+    try {
+      const pending = config?.pendingChange;
+      const message = `PopcornCine: Approve fee wallet change\nNew Wallet 1: ${pending?.newWallet1}\nNew Wallet 2: ${pending?.newWallet2}\nApproved by: ${connectedAddress}`;
+      const signature = await signMsg(message);
+
+      const res = await fetch("/api/admin/fee-wallets/approve", {
+        method: "POST",
+        headers: authHeaders(token),
+        body: JSON.stringify({
+          approver_address: connectedAddress,
+          signature,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to approve");
+
+      setStatus("Wallet change approved and applied!");
+      fetchConfig();
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Failed to approve change");
+    } finally {
+      setApproving(false);
+    }
+  };
+
+  const handleCancel = async () => {
+    if (!authenticated || !connectedAddress) { login(); return; }
+
+    setCancelling(true);
+    setError(null);
+
+    try {
+      const res = await fetch("/api/admin/fee-wallets/cancel", {
+        method: "POST",
+        headers: authHeaders(token),
+        body: JSON.stringify({ caller_address: connectedAddress }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to cancel");
+
+      setStatus("Pending change cancelled.");
+      fetchConfig();
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : "Failed to cancel");
+    } finally {
+      setCancelling(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="mt-6 bg-surface-container-low rounded-xl p-5">
+        <div className="h-20 skeleton rounded-lg" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 bg-surface-container-low rounded-xl p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <svg className="w-4 h-4 text-amber" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+        </svg>
+        <h2 className="text-base font-semibold">Fee Wallet Configuration</h2>
+        <span className="text-[10px] px-2 py-0.5 bg-amber/10 text-amber rounded-full">Multisig Required</span>
+      </div>
+
+      <p className="text-white/40 text-xs mb-4">
+        1% fee on all transactions, split 70/30 between Wallet 1 and Wallet 2.
+        Changing wallets requires both current wallets to sign.
+      </p>
+
+      {/* Current wallets */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+        <div className="bg-surface-container rounded-xl p-3">
+          <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Wallet 1 (70%)</div>
+          <p className="text-xs font-mono text-white break-all">{config?.wallet1 || "Not configured"}</p>
+          {isWallet1 && <span className="text-[10px] text-primary mt-1 inline-block">Connected</span>}
+        </div>
+        <div className="bg-surface-container rounded-xl p-3">
+          <div className="text-[10px] text-white/40 uppercase tracking-[0.15em] mb-1">Wallet 2 (30%)</div>
+          <p className="text-xs font-mono text-white break-all">{config?.wallet2 || "Not configured"}</p>
+          {isWallet2 && <span className="text-[10px] text-primary mt-1 inline-block">Connected</span>}
+        </div>
+      </div>
+
+      {/* Pending change */}
+      {config?.pendingChange && (
+        <div className="bg-amber/5 border border-amber/20 rounded-xl p-4 mb-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[10px] px-2 py-0.5 bg-amber/10 text-amber rounded-full">Pending Change</span>
+            <span className="text-[10px] text-white/30">
+              Proposed {new Date(config.pendingChange.proposedAt).toLocaleDateString()}
+            </span>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-3">
+            <div>
+              <div className="text-[10px] text-white/40">New Wallet 1</div>
+              <p className="text-xs font-mono text-amber break-all">{config.pendingChange.newWallet1}</p>
+            </div>
+            <div>
+              <div className="text-[10px] text-white/40">New Wallet 2</div>
+              <p className="text-xs font-mono text-amber break-all">{config.pendingChange.newWallet2}</p>
+            </div>
+          </div>
+          <div className="text-[10px] text-white/40 mb-3">
+            Proposed by: <span className="font-mono">{config.pendingChange.proposedBy}</span>
+          </div>
+
+          <div className="flex gap-2">
+            {isFeeWallet && !isPendingProposer && (
+              <button
+                onClick={handleApprove}
+                disabled={approving}
+                className="px-4 py-2 noir-gradient text-on-primary text-xs font-bold rounded-lg disabled:opacity-30 transition-all"
+              >
+                {approving ? "Signing..." : "Approve Change"}
+              </button>
+            )}
+            {isFeeWallet && (
+              <button
+                onClick={handleCancel}
+                disabled={cancelling}
+                className="px-4 py-2 bg-surface-container-highest text-xs rounded-lg hover:bg-surface-bright transition-colors disabled:opacity-30"
+              >
+                {cancelling ? "Cancelling..." : "Cancel"}
+              </button>
+            )}
+            {isPendingProposer && (
+              <p className="text-[10px] text-white/40 self-center">
+                Waiting for the other wallet to approve...
+              </p>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Propose new wallets */}
+      {!config?.pendingChange && isFeeWallet && (
+        <form onSubmit={handlePropose} className="space-y-3">
+          <div className="text-[10px] text-white/40 uppercase tracking-[0.15em]">Propose New Wallets</div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input
+              type="text"
+              value={newWallet1}
+              onChange={(e) => setNewWallet1(e.target.value)}
+              placeholder="New Wallet 1 (0x...)"
+              pattern="^0x[a-fA-F0-9]{40}$"
+              className="w-full bg-surface-container-highest border-none rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            />
+            <input
+              type="text"
+              value={newWallet2}
+              onChange={(e) => setNewWallet2(e.target.value)}
+              placeholder="New Wallet 2 (0x...)"
+              pattern="^0x[a-fA-F0-9]{40}$"
+              className="w-full bg-surface-container-highest border-none rounded-xl px-3 py-2.5 text-xs font-mono focus:outline-none focus:ring-1 focus:ring-primary transition-colors"
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={proposing || !newWallet1 || !newWallet2}
+            className="py-2.5 px-6 noir-gradient text-on-primary font-headline font-bold text-xs rounded-xl disabled:opacity-30 active:scale-95 transition-all uppercase tracking-wider"
+          >
+            {proposing ? "Signing..." : "Propose Wallet Change"}
+          </button>
+        </form>
+      )}
+
+      {!isFeeWallet && !config?.pendingChange && authenticated && (
+        <p className="text-white/30 text-xs">
+          Connect with one of the fee wallets above to propose changes.
+        </p>
+      )}
+
+      {/* Status / Error */}
+      {status && <p className="mt-3 text-primary text-xs">{status}</p>}
+      {error && (
+        <div className="mt-3 p-3 bg-error/5 rounded-xl">
+          <p className="text-xs text-error">{error}</p>
+        </div>
+      )}
     </div>
   );
 }

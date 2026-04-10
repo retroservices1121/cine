@@ -1,3 +1,5 @@
+import { getFeeWallets } from "./fee-config";
+
 // USDC on Base (6 decimals)
 const USDC_BASE = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913";
 const USDC_DECIMALS = 6;
@@ -5,15 +7,8 @@ const BASE_CHAIN_ID = 8453;
 
 // Fee config
 const FEE_BPS = 100; // 1% = 100 basis points
-const ADMIN1_SPLIT = 60; // 60%
-const ADMIN2_SPLIT = 40; // 40%
-
-function getAdminWallets() {
-  const admin1 = process.env.FEE_WALLET_1;
-  const admin2 = process.env.FEE_WALLET_2;
-  if (!admin1 || !admin2) return null;
-  return { admin1, admin2 };
-}
+const WALLET1_SPLIT = 70; // 70%
+const WALLET2_SPLIT = 30; // 30%
 
 // Encode ERC-20 transfer(address,uint256) call
 // Selector: 0xa9059cbb
@@ -38,42 +33,43 @@ export interface FeeTx {
 }
 
 /**
- * Calculate fee transactions for a profitable amount.
- * Returns empty array if fee wallets aren't configured or profit <= 0.
+ * Calculate fee transactions for a transaction amount.
+ * 1% fee on every transaction, split 70/30 between wallet 1 and wallet 2.
+ * Returns empty array if fee wallets aren't configured or amount <= 0.
  */
-export function calculateFeeTxs(profitUsd: number): FeeTx[] {
-  if (profitUsd <= 0) return [];
+export function calculateFeeTxs(amountUsd: number): FeeTx[] {
+  if (amountUsd <= 0) return [];
 
-  const wallets = getAdminWallets();
+  const wallets = getFeeWallets();
   if (!wallets) return [];
 
-  const totalFeeUsd = profitUsd * (FEE_BPS / 10000);
+  const totalFeeUsd = amountUsd * (FEE_BPS / 10000);
   if (totalFeeUsd < 0.01) return []; // Skip dust
 
-  const admin1Fee = totalFeeUsd * (ADMIN1_SPLIT / 100);
-  const admin2Fee = totalFeeUsd * (ADMIN2_SPLIT / 100);
+  const wallet1Fee = totalFeeUsd * (WALLET1_SPLIT / 100);
+  const wallet2Fee = totalFeeUsd * (WALLET2_SPLIT / 100);
 
   const txs: FeeTx[] = [];
 
-  if (admin1Fee >= 0.001) {
+  if (wallet1Fee >= 0.001) {
     txs.push({
       to: USDC_BASE,
-      data: encodeTransfer(wallets.admin1, usdToRaw(admin1Fee)),
+      data: encodeTransfer(wallets.wallet1, usdToRaw(wallet1Fee)),
       value: "0",
       gas: "80000",
       chain_id: BASE_CHAIN_ID,
-      description: `Platform fee (${admin1Fee.toFixed(4)} USDC)`,
+      description: `Platform fee (${wallet1Fee.toFixed(4)} USDC)`,
     });
   }
 
-  if (admin2Fee >= 0.001) {
+  if (wallet2Fee >= 0.001) {
     txs.push({
       to: USDC_BASE,
-      data: encodeTransfer(wallets.admin2, usdToRaw(admin2Fee)),
+      data: encodeTransfer(wallets.wallet2, usdToRaw(wallet2Fee)),
       value: "0",
       gas: "80000",
       chain_id: BASE_CHAIN_ID,
-      description: `Platform fee (${admin2Fee.toFixed(4)} USDC)`,
+      description: `Platform fee (${wallet2Fee.toFixed(4)} USDC)`,
     });
   }
 
@@ -83,15 +79,15 @@ export function calculateFeeTxs(profitUsd: number): FeeTx[] {
 /**
  * Get fee summary for display purposes.
  */
-export function calculateFeeSummary(profitUsd: number) {
-  if (profitUsd <= 0) return null;
+export function calculateFeeSummary(amountUsd: number) {
+  if (amountUsd <= 0) return null;
 
-  const totalFee = profitUsd * (FEE_BPS / 10000);
+  const totalFee = amountUsd * (FEE_BPS / 10000);
   return {
-    profit: profitUsd,
+    amount: amountUsd,
     feePercent: FEE_BPS / 100,
     totalFee,
-    admin1Fee: totalFee * (ADMIN1_SPLIT / 100),
-    admin2Fee: totalFee * (ADMIN2_SPLIT / 100),
+    wallet1Fee: totalFee * (WALLET1_SPLIT / 100),
+    wallet2Fee: totalFee * (WALLET2_SPLIT / 100),
   };
 }

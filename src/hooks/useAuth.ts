@@ -1,6 +1,6 @@
 "use client";
 
-import { usePrivy, useSendTransaction } from "@privy-io/react-auth";
+import { usePrivy, useSendTransaction, useSignMessage } from "@privy-io/react-auth";
 
 const rawId = process.env.NEXT_PUBLIC_PRIVY_APP_ID || "";
 const HAS_PRIVY = rawId.length > 10 && !rawId.includes("your_");
@@ -19,6 +19,12 @@ const NOOP_SEND = {
   },
 } as const;
 
+const NOOP_SIGN = {
+  signMessage: async () => {
+    throw new Error("Privy not configured");
+  },
+} as const;
+
 export function useAuth() {
   if (!HAS_PRIVY) return NOOP_AUTH;
   // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -31,4 +37,11 @@ export function useSendTx() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const tx = useSendTransaction();
   return tx;
+}
+
+export function useSignMsg() {
+  if (!HAS_PRIVY) return NOOP_SIGN;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const sign = useSignMessage();
+  return sign;
 }
